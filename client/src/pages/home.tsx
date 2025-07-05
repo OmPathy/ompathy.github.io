@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Network, Users } from "lucide-react";
+import heroImage from "@assets/image_1751676001229.png";
 
 export default function Home() {
   return (
@@ -20,12 +21,11 @@ export default function Home() {
               </p>
             </div>
             <div className="flex justify-center">
-              <div className="relative w-96 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-2xl backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                <Network className="h-16 w-16 text-white/80" />
-                <div className="absolute top-4 right-4 w-3 h-3 bg-blue-300 rounded-full animate-pulse"></div>
-                <div className="absolute bottom-8 left-8 w-2 h-2 bg-purple-300 rounded-full animate-pulse"></div>
-                <div className="absolute top-1/3 left-4 w-4 h-4 bg-blue-200 rounded-full animate-pulse"></div>
-              </div>
+              <img
+                src={heroImage}
+                alt="OmPathy AI-driven business solutions with data analytics and network visualization"
+                className="rounded-2xl shadow-xl w-full max-w-lg h-auto"
+              />
             </div>
           </div>
         </div>
@@ -40,20 +40,22 @@ export default function Home() {
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <img
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
-                alt="Modern office workspace with laptops and technology"
-                className="rounded-xl shadow-lg w-full h-auto"
-              />
-
-              <Card className="mt-8 bg-primary text-white">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-3 flex items-center">
-                    <Users className="h-6 w-6 mr-2" />
-                    How We Met
-                  </h3>
-                </CardContent>
-              </Card>
+              <div className="relative rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400"
+                  alt="Modern office workspace with laptops and technology"
+                  className="w-full h-64 object-cover"
+                />
+                <div className="absolute inset-0 bg-black/40"></div>
+                <Card className="absolute bottom-4 left-4 right-4 bg-primary text-white border-none">
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-semibold flex items-center">
+                      <Users className="h-5 w-5 mr-2" />
+                      How We Met
+                    </h3>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
 
             <div className="space-y-6">
