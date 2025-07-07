@@ -91,8 +91,10 @@ OmPathy is a modern full-stack web application built with React frontend and Exp
 - **Build Optimization**: Separate client and server builds with appropriate bundling
 
 ## Changelog
-- July 05, 2025. Initial setup
+- July 07, 2025: GitHub repository setup with README, LICENSE, and contributing guidelines
+- July 05, 2025: Initial setup
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Version control: Prefers GitHub for project management and collaboration.
