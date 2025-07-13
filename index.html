@@ -3,39 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
+    <title>OmPathy - Always on Path, Always with You</title>
     <link rel="stylesheet" href="style.css">
-</head>
+    </head>
 <body>
-    <header>
-        <h1>Welcome to My Website!</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="path/to/ompany-logo.png" alt="OmPathy Logo"> <span>OmPathy</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Vision</a></li>
+                    <li><a href="#">Product</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <section class="hero">
-            <h2>Discover Amazing Things</h2>
-            <p>This is a simple example of a website created with HTML, CSS, and JavaScript.</p>
-            <button id="myButton">Click Me!</button>
+        <section class="hero-section">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h2>Always on Path, always with you.</h2>
+                    <p>We leverage cutting-edge technologies to deliver innovative B2B SaaS solutions, helping businesses optimize workplace operations and elevate employee experiences.</p>
+                    <p>Our focus on AI, data analytics, and seamless integration ensures that companies remain agile and competitive in a rapidly evolving market.</p>
+                </div>
+                <div class="hero-image">
+                    <img src="path/to/ai-graphic.png" alt="AI Graphic"> </div>
+            </div>
         </section>
 
-        <section class="content">
-            <h3>About This Page</h3>
-            <p>You can add more sections and content here to build out your website.</p>
-            <p>Remember to link your CSS for styling and your JavaScript for interactivity.</p>
+        <section class="background-divider">
+            <div class="container">
+                <h3>Background</h3>
+            </div>
+        </section>
+
+        <section class="how-we-met-section">
+            <div class="how-we-met-overlay">
+                <h2>How We Met</h2>
+            </div>
+        </section>
+
+        <section class="main-text-content">
+            <div class="container">
+                <p>Our journey began from our own experiences at our previous company. While working under intense pressure at our previous organization, we witnessed how a thoughtful and proactive HR team can make a measurable difference in employee wellbeing and performance. Their support enabled us to remain engaged, productive, and resilient—despite a demanding environment.</p>
+                <p>However, such experiences are not universal. In many workplaces, employees lack safe channels to express concerns, and HR teams often face constraints in time, resources, and data visibility. These limitations hinder timely, personalized support, contributing to disengagement and high turnover.</p>
+                <p>We set out to change that. By combining AI-driven sentiment analysis with real-time insights, our platform enables organizations to understand their people better, intervene earlier, and foster a culture of trust, well-being, and long-term retention.</p>
+            </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 My Awesome Website. All rights reserved.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-info">
+                <p>A.M.O International Co., Ltd</p>
+                <p>&copy; 2025 A.M.O International Co., Ltd. All rights reserved.</p>
+            </div>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Vision</a></li>
+                    <li><a href="#">Product</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms Of Service</a></li>
+                </ul>
+            </nav>
+        </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
