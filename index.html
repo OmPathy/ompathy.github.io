@@ -3,87 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Awesome Website</title>
-    <!-- Load Tailwind CSS from CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Custom styles for Inter font -->
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
+    <title>My First Website</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 text-gray-900">
-
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-md p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-indigo-600 rounded-md p-2">MyBrand</a>
-            <div class="space-x-4">
-                <a href="#" class="text-gray-700 hover:text-indigo-600 p-2 rounded-md transition duration-300">Home</a>
-                <a href="#" class="text-gray-700 hover:text-indigo-600 p-2 rounded-md transition duration-300">Features</a>
-                <a href="#" class="text-gray-700 hover:text-indigo-600 p-2 rounded-md transition duration-300">About</a>
-                <a href="#" class="text-gray-700 hover:text-indigo-600 p-2 rounded-md transition duration-300">Contact</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="bg-indigo-600 text-white py-20 text-center rounded-b-lg shadow-lg mx-4 mt-4">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 rounded-md">Welcome to Our Amazing Service!</h1>
-            <p class="text-lg md:text-xl mb-8 rounded-md">
-                Discover how we can help you achieve your goals with our innovative solutions.
-            </p>
-            <button class="bg-white text-indigo-600 hover:bg-indigo-100 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                Learn More
-            </button>
-        </div>
+<body>
+    <header>
+        <h1>Welcome to My Website!</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Features Section -->
-    <section class="py-16 px-4">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12 rounded-md">Our Core Features</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <div class="text-indigo-600 text-5xl mb-4 text-center">💡</div>
-                    <h3 class="text-xl font-semibold mb-4 text-center rounded-md">Innovative Solutions</h3>
-                    <p class="text-gray-600 text-center rounded-md">
-                        We provide cutting-edge solutions tailored to your specific needs, driving efficiency and growth.
-                    </p>
-                </div>
-                <!-- Feature 2 -->
-                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <div class="text-indigo-600 text-5xl mb-4 text-center">🚀</div>
-                    <h3 class="text-xl font-semibold mb-4 text-center rounded-md">Rapid Deployment</h3>
-                    <p class="text-gray-600 text-center rounded-md">
-                        Get up and running quickly with our streamlined deployment process and dedicated support.
-                    </p>
-                </div>
-                <!-- Feature 3 -->
-                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <div class="text-indigo-600 text-5xl mb-4 text-center">🔒</div>
-                    <h3 class="text-xl font-semibold mb-4 text-center rounded-md">Secure & Reliable</h3>
-                    <p class="text-gray-600 text-center rounded-md">
-                        Your data and operations are safe with our robust security measures and reliable infrastructure.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <h2>Discover Amazing Things</h2>
+            <p>This is a simple example of a website created with HTML, CSS, and JavaScript.</p>
+            <button id="myButton">Click Me!</button>
+        </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-8 rounded-t-lg mx-4">
-        <div class="container mx-auto text-center px-4">
-            <p class="text-gray-400 rounded-md">&copy; 2025 MyBrand. All rights reserved.</p>
-            <div class="mt-4 space-x-4">
-                <a href="#" class="text-gray-400 hover:text-white transition duration-300 rounded-md">Privacy Policy</a>
-                <a href="#" class="text-gray-400 hover:text-white transition duration-300 rounded-md">Terms of Service</a>
-            </div>
-        </div>
+        <section class="content">
+            <h3>About This Page</h3>
+            <p>You can add more sections and content here to build out your website.</p>
+            <p>Remember to link your CSS for styling and your JavaScript for interactivity.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Awesome Website. All rights reserved.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
