@@ -5,6 +5,9 @@
     --text-color: #333;
     --dark-gray: #4a4a4a;
     --footer-text: #666;
+    --input-border: #ccc;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
 }
 
 body {
@@ -161,7 +164,6 @@ body {
 
 /* How We Met Section */
 .how-we-met-section {
-    /* IMPORTANT: Replace 'images/desk-background.jpg' with the actual path to your desk background image */
     background: url('images/desk-background.jpg') no-repeat center center/cover;
     height: 300px; /* Adjust height as needed */
     display: flex;
@@ -287,6 +289,238 @@ body {
     flex-grow: 1; /* Allows paragraph to take up available space */
 }
 
+/* Product Page Specific Styles */
+.product-hero-section {
+    background-color: #f8f8fc;
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+.product-hero-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.product-hero-text {
+    flex: 1;
+    max-width: 50%;
+}
+
+.product-hero-text h1 {
+    font-size: 2.5rem;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.product-hero-text p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.product-hero-image {
+    flex: 1;
+    max-width: 50%;
+    text-align: right;
+}
+
+.product-hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-features-section {
+    padding: 60px 0;
+    background-color: var(--light-gray);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3 columns on desktop, responsive */
+    gap: 25px;
+    justify-content: center;
+}
+
+.feature-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.feature-card .feature-icon {
+    height: 80px; /* Fixed height for icons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.feature-card .feature-icon img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    color: var(--dark-gray);
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.our-mission-section {
+    background-color: #f8f8fc;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.our-mission-section h2 {
+    font-size: 2.5rem;
+    color: #222;
+    margin-bottom: 25px;
+}
+
+.our-mission-section p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    max-width: 900px;
+    margin: 0 auto 20px;
+}
+
+/* About Us Page Specific Styles */
+.about-hero-section {
+    background-color: #f8f8fc;
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+.about-hero-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.about-hero-text {
+    flex: 1;
+    max-width: 50%;
+}
+
+.about-hero-text h1 {
+    font-size: 2.5rem;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.about-hero-text .subtitle {
+    font-size: 1.2rem;
+    color: var(--primary-blue); /* Highlight subtitle */
+    margin-bottom: 20px;
+}
+
+.about-hero-text p {
+    font-size: 1.05rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.about-hero-image {
+    flex: 1;
+    max-width: 50%;
+    text-align: right;
+}
+
+.about-hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-us-section {
+    padding: 60px 0 80px;
+    background-color: var(--light-gray);
+}
+
+.contact-form-container {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    max-width: 600px; /* Limit form width */
+    margin: 0 auto;
+}
+
+.contact-form-container h2 {
+    font-size: 2rem;
+    color: #222;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.contact-form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    display: block;
+    font-size: 1.05rem;
+    color: var(--dark-gray);
+    margin-bottom: 8px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #999;
+}
+
+.contact-form textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 100px;
+}
+
+.send-message-button {
+    background-color: var(--button-bg);
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Full width button */
+}
+
+.send-message-button:hover {
+    background-color: var(--button-hover-bg);
+}
 
 /* Footer */
 .footer {
@@ -353,13 +587,17 @@ body {
         justify-content: center;
     }
 
-    .hero-section .hero-content {
+    /* Hero sections */
+    .hero-section .hero-content,
+    .product-hero-section .product-hero-content,
+    .about-hero-section .about-hero-content {
         flex-direction: column;
         text-align: center;
     }
 
-    .hero-text,
-    .hero-image {
+    .hero-text, .hero-image,
+    .product-hero-text, .product-hero-image,
+    .about-hero-text, .about-hero-image {
         max-width: 100%;
     }
 
@@ -370,23 +608,68 @@ body {
         right: -50px;
     }
 
-    .vision-hero h1 {
-        font-size: 2.5rem;
+    .vision-hero h1,
+    .product-hero-text h1,
+    .our-mission-section h2,
+    .about-hero-text h1,
+    .contact-form-container h2 {
+        font-size: 2.2rem;
     }
 
-    .vision-hero .subtitle {
-        font-size: 1.1rem;
+    .vision-hero .subtitle,
+    .hero-text p,
+    .product-hero-text p,
+    .our-mission-section p,
+    .about-hero-text p {
+        font-size: 1rem;
     }
 
-    .vision-card {
+    .vision-card,
+    .feature-card {
         padding: 20px;
     }
 
-    .vision-card h3 {
+    .vision-card h3,
+    .feature-card h3 {
         font-size: 1.2rem;
     }
 
-    .vision-card p {
+    .vision-card p,
+    .feature-card p {
         font-size: 0.95rem;
+    }
+
+    .contact-form-container {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar nav ul li {
+        margin: 0 10px;
+    }
+
+    .navbar .logo span {
+        font-size: 1.5rem;
+    }
+
+    .hero-text h2,
+    .product-hero-text h1,
+    .about-hero-text h1 {
+        font-size: 2rem;
+    }
+
+    .how-we-met-overlay h2 {
+        font-size: 2.5rem;
+    }
+
+    .background-divider h3 {
+        font-size: 1.8rem;
+    }
+    .background-divider h3::before,
+    .background-divider h3::after {
+        width: 20px;
+        left: -40px;
+        right: -40px;
     }
 }
