@@ -1,92 +1,285 @@
 /* Basic Reset & Body Styling */
+:root {
+    --primary-blue: #007bff; /* Example blue, adjust if needed */
+    --light-gray: #f0f0f5; /* Background color */
+    --text-color: #333;
+    --dark-gray: #4a4a4a;
+    --footer-text: #666;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Replace with your actual font */
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    line-height: 1.6;
 }
 
-/* Header Styling */
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
+.container {
+    max-width: 1200px; /* Adjust as needed for your content width */
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-header h1 {
-    margin: 0;
+/* Header/Navigation Bar */
+.navbar {
+    background-color: #fff;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Navigation Styling */
-nav ul {
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark-gray); /* Adjust logo text color */
+}
+
+.navbar .logo img {
+    height: 40px; /* Adjust logo height */
+    margin-right: 10px;
+}
+
+.navbar nav ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar nav ul li {
+    margin-left: 30px;
+}
+
+.navbar nav ul li a {
+    text-decoration: none;
+    color: var(--dark-gray); /* Adjust link color */
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.navbar nav ul li a:hover,
+.navbar nav ul li a.active {
+    color: var(--primary-blue);
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #f8f8fc; /* Light background for the hero section */
+    padding: 80px 0;
+    overflow: hidden; /* To contain floated/flexed elements */
+}
+
+.hero-section .hero-content {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Space between text and image */
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 50%; /* Adjust as needed */
+}
+
+.hero-text h2 {
+    font-size: 2.5rem;
+    color: #222; /* Darker heading color */
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.hero-image {
+    flex: 1;
+    max-width: 50%; /* Adjust as needed */
+    text-align: right;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px; /* Matches the image in the screenshot */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Background Divider */
+.background-divider {
+    text-align: center;
+    padding: 40px 0 20px; /* Adjusted padding to separate from previous section */
+}
+
+.background-divider h3 {
+    font-size: 2rem;
+    color: var(--dark-gray);
+    position: relative; /* For the line effect */
+    display: inline-block; /* For the line effect */
+    padding: 0 20px;
+}
+
+/* Optional: Add a subtle line effect around "Background" */
+.background-divider h3::before,
+.background-divider h3::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 60px; /* Length of the line */
+    height: 1px;
+    background-color: #ccc;
+}
+
+.background-divider h3::before {
+    left: -80px; /* Position to the left */
+}
+
+.background-divider h3::after {
+    right: -80px; /* Position to the right */
+}
+
+
+/* How We Met Section */
+.how-we-met-section {
+    background: url('path/to/desk-background.jpg') no-repeat center center/cover; /* Replace with your actual desk background image path */
+    height: 300px; /* Adjust height as needed */
     display: flex;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    margin: 40px 0; /* Space above and below */
+    border-radius: 15px; /* Matches the image in the screenshot */
+    overflow: hidden; /* Important for border-radius with background image */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-nav ul li {
-    margin: 0 15px;
+.how-we-met-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* Dark overlay */
+    z-index: 1;
+    border-radius: 15px; /* Match parent */
 }
 
-nav ul li a {
+.how-we-met-overlay {
+    position: relative;
+    z-index: 2; /* Ensure text is above overlay */
     color: #fff;
-    text-decoration: none;
-    font-weight: bold;
 }
 
-nav ul li a:hover {
-    text-decoration: underline;
+.how-we-met-overlay h2 {
+    font-size: 3rem;
+    margin: 0;
 }
 
-/* Main Content Styling */
-main {
-    padding: 20px;
-    max-width: 960px;
-    margin: 20px auto;
+/* Main Text Content */
+.main-text-content {
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin-bottom: 40px;
+    border-radius: 15px; /* Matches the image in the screenshot */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
-.hero {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: #e2f0f7;
+.main-text-content p {
     margin-bottom: 20px;
-    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1.05rem;
 }
 
-.hero h2 {
-    color: #007bff;
-}
-
-.hero button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 15px;
-}
-
-.hero button:hover {
-    background-color: #0056b3;
-}
-
-.content h3 {
-    color: #333;
-}
-
-/* Footer Styling */
-footer {
+/* Footer */
+.footer {
+    background-color: #f8f8fc; /* Light background for footer */
+    padding: 30px 0;
     text-align: center;
-    padding: 1rem 0;
-    background-color: #333;
-    color: #fff;
-    margin-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    gap: 20px;
+}
+
+.footer-info {
+    text-align: left;
+    flex: 1;
+    min-width: 250px; /* Ensures it doesn't get too narrow */
+}
+
+.footer-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--footer-text);
+}
+
+.footer-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap; /* Allows links to wrap */
+    gap: 15px; /* Space between links */
+    justify-content: flex-end; /* Align links to the right */
+    flex: 1;
+    min-width: 300px; /* Ensures links don't get too cramped */
+}
+
+.footer-nav ul li a {
+    text-decoration: none;
+    color: var(--footer-text);
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-nav ul li a:hover {
+    color: var(--primary-blue);
+}
+
+/* Basic responsiveness for smaller screens (adjust as needed) */
+@media (max-width: 768px) {
+    .navbar .container,
+    .footer .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .navbar nav ul,
+    .footer-nav ul {
+        margin-top: 15px;
+        justify-content: center;
+    }
+
+    .hero-section .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text,
+    .hero-image {
+        max-width: 100%;
+    }
+
+    .background-divider h3::before,
+    .background-divider h3::after {
+        width: 30px; /* Shorter lines on smaller screens */
+        left: -50px;
+        right: -50px;
+    }
 }
