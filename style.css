@@ -339,8 +339,9 @@ body {
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3 columns on desktop, responsive */
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Changed from auto-fit to auto-fill */
+    max-width: 890px; /* Calculation: (3 columns * 280px min-width) + (2 gaps * 25px gap) = 840px + 50px = 890px */
+    margin: 0 auto; /* Center the grid container */
     justify-content: center;
 }
 
