@@ -53,7 +53,7 @@ body {
 .navbar .logo img {
     height: 50px; /* Adjust logo height as per your new logo */
     width: auto; /* Maintains aspect ratio */
-    margin-right: 4px;
+    margin-right: 2px;
     vertical-align: middle;
 }
 
