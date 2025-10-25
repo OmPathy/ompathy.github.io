@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduled Reports Settings</title>
+    <link rel="stylesheet" href="css/6_report_schedule_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+    <!-- Main Content -->
+    <main class="main-content">   
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <span class="icon">📊</span>
+                <h1>Scheduled Reports Settings</h1>
+            </div>
+            <div class="header-right">
+                <div class="notification-icon">🔔</div>
+                <div class="user-avatar">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGRkY1RjUiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzk5NzI2MyIvPgo8cGF0aCBkPSJNMzAgMzJjMC02LjYyNy01LjM3My0xMi0xMi0xMnMtMTIgNS4zNzMtMTIgMTIiIGZpbGw9IiM5OTcyNjMiLz4KPC9zdmc+" alt="User Avatar">
+                </div>
+                <button class="add-schedule-btn">Add New Schedule</button>
+            </div>
+        </header>
+
+            <!-- Left Panel - Form -->
+            <div class="left-panel">
+                <!-- Report Name -->
+                <div class="form-group">
+                    <label for="reportName">Report Name</label>
+                    <input type="text" id="reportName" class="example-text" value="Monthly Employee Sentiment Report" placeholder="Enter report name">
+                </div>
+
+                <!-- Template -->
+                <div class="form-group">
+                    <label for="template">Template</label>
+                    <select id="template" class="example-text">
+                        <option value="marketing-sales">Marketing & Sales Sentiment Overview</option>
+                        <option value="hr-overview">HR Overview</option>
+                        <option value="financial">Financial Overview</option>
+                    </select>
+                </div>
+
+                <!-- Frequency -->
+                <div class="form-group">
+                    <label>Frequency</label>
+                    <div class="frequency-options">
+                        <label class="radio-option">
+                            <input type="radio" name="frequency" value="weekly">
+                            <span>Weekly</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="frequency" value="monthly" checked>
+                            <span>Monthly</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="frequency" value="quarterly">
+                            <span>Quarterly</span>
+                        </label>
+                        <label class="radio-option custom">
+                            <input type="radio" name="frequency" value="custom">
+                            <span class="calendar-icon" id="calendar-icon">📅</span>
+                            <input type="date" id="custom-date" class="hidden-date-picker" style="display: none;">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Time and Date -->
+                <div class="time-date-row">
+                    <div class="form-group time-group">
+                        <label for="time">Time:</label>
+                        <select id="time" class="example-text">
+                            <option value="00:00">12:00 AM</option>
+                            <option value="01:00">01:00 AM</option>
+                            <option value="02:00">02:00 AM</option>
+                            <option value="03:00">03:00 AM</option>
+                            <option value="04:00">04:00 AM</option>
+                            <option value="05:00">05:00 AM</option>
+                            <option value="06:00">06:00 AM</option>
+                            <option value="07:00">07:00 AM</option>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="09:00" selected>09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                            <option value="19:00">07:00 PM</option>
+                            <option value="20:00">08:00 PM</option>
+                            <option value="21:00">09:00 PM</option>
+                            <option value="22:00">10:00 PM</option>
+                            <option value="23:00">11:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="form-group date-group">
+                        <label for="date">Date:</label>
+                        <select id="date" class="example-text">
+                            <option value="1st" selected>1st</option>
+                            <option value="2nd">2nd</option>
+                            <option value="3rd">3rd</option>
+                            <option value="4th">4th</option>
+                            <option value="5th">5th</option>
+                            <option value="6th">6th</option>
+                            <option value="7th">7th</option>
+                            <option value="8th">8th</option>
+                            <option value="9th">9th</option>
+                            <option value="10th">10th</option>
+                            <option value="11th">11th</option>
+                            <option value="12th">12th</option>
+                            <option value="13th">13th</option>
+                            <option value="14th">14th</option>
+                            <option value="15th">15th</option>
+                            <option value="16th">16th</option>
+                            <option value="17th">17th</option>
+                            <option value="18th">18th</option>
+                            <option value="19th">19th</option>
+                            <option value="20th">20th</option>
+                            <option value="21st">21st</option>
+                            <option value="22nd">22nd</option>
+                            <option value="23rd">23rd</option>
+                            <option value="24th">24th</option>
+                            <option value="25th">25th</option>
+                            <option value="26th">26th</option>
+                            <option value="27th">27th</option>
+                            <option value="28th">28th</option>
+                            <option value="29th">29th</option>
+                            <option value="30th">30th</option>
+                            <option value="31st">31st</option>
+                            <option value="last">Last day</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Time Zone -->
+                <div class="form-group">
+                    <label for="timezone">Select Time Zone:</label>
+                    <select id="timezone" class="example-text">
+                        <option value="utc">UTC (Coordinated Universal Time): UTC+00:00</option>
+                        <option value="est">EST (Eastern Standard Time): UTC-05:00</option>
+                        <option value="cst">CST (Central Standard Time): UTC-06:00</option>
+                        <option value="mst">MST (Mountain Standard Time): UTC-07:00</option>
+                        <option value="pst" selected>PST (Pacific Standard Time): UTC-08:00</option>
+                        <option value="akst">AKST (Alaska Standard Time): UTC-09:00</option>
+                        <option value="hst">HST (Hawaii Standard Time): UTC-10:00</option>
+                        <option value="gmt">GMT (Greenwich Mean Time): UTC+00:00</option>
+                        <option value="cet">CET (Central European Time): UTC+01:00</option>
+                        <option value="eet">EET (Eastern European Time): UTC+02:00</option>
+                        <option value="msk">MSK (Moscow Standard Time): UTC+03:00</option>
+                        <option value="ist">IST (India Standard Time): UTC+05:30</option>
+                        <option value="cst_china">CST (China Standard Time): UTC+08:00</option>
+                        <option value="jst">JST (Japan Standard Time): UTC+09:00</option>
+                        <option value="aest">AEST (Australian Eastern Standard Time): UTC+10:00</option>
+                        <option value="nzst">NZST (New Zealand Standard Time): UTC+12:00</option>
+                    </select>
+                </div>
+
+                <!-- Recipients -->
+                <div class="form-group">
+                    <label>Recipients</label>
+                    <div class="recipients-input">
+                        <input type="email" placeholder="Enter email address">
+                        <button class="specify-btn">Specify</button>
+                    </div>
+                    <div class="recipient-actions">
+                        <button class="add-group-btn">Add Group</button>
+                        <button class="manage-group-btn">Manage Group</button>
+                    </div>
+                </div>
+
+                <!-- Email Subject -->
+                <div class="form-group">
+                    <label for="emailSubject">Email Subject</label>
+                    <input type="text" id="emailSubject" class="example-text" value="Monthly Sentiment Overview" placeholder="Enter email subject">
+                </div>
+
+                <!-- Email Body -->
+                <div class="form-group">
+                    <label for="emailBody">Email Body</label>
+                    <textarea id="emailBody" placeholder="Hello team,
+
+Here is our Monthly Sentiment Overview for {{Month}}.
+Please review the key insights and let us know if you have..."></textarea>
+                    <button class="preview-btn">Preview</button>
+                </div>
+            </div>
+
+            <!-- Right Panel - Preview -->
+            <div class="right-panel">
+                <div class="preview-section">
+                    <div class="preview-item">
+                        <span class="label">Report Name:</span>
+                        <span class="value">Monthly Employee Sentiment Report</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="label">Template:</span>
+                        <span class="value">Marketing & Sales Sentiment Overview</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="label">Recipients:</span>
+                        <div class="recipients-list">
+                            <div class="recipient">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGRkY1RjUiLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxMyIgcj0iNSIgZmlsbD0iIzk5NzI2MyIvPgo8cGF0aCBkPSJNMjQgMjZjMC01LjMwMi00LjI5OC05LjYtOS42LTkuNlM0LjggMjAuNjk4IDQuOCAyNiIgZmlsbD0iIzk5NzI2MyIvPgo8L3N2Zz4=" alt="Grace Taylor">
+                                <div class="recipient-info">
+                                    <div class="name">Grace Taylor</div>
+                                    <div class="role">Head of HR</div>
+                                </div>
+                            </div>
+                            <div class="recipient">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNFM0Y0RkYiLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxMyIgcj0iNSIgZmlsbD0iIzM5OEVGNyIvPgo8cGF0aCBkPSJNMjQgMjZjMC01LjMwMi00LjI5OC05LjYtOS42LTkuNlM0LjggMjAuNjk4IDQuOCAyNiIgZmlsbD0iIzM5OEVGNyIvPgo8L3N2Zz4=" alt="Jake Miller">
+                                <div class="recipient-info">
+                                    <div class="name">Jake Miller</div>
+                                    <div class="role">Marketing Team Leader</div>
+                                </div>
+                            </div>
+                            <div class="recipient">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiNGRkY1RjUiLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxMyIgcj0iNSIgZmlsbD0iIzk5NzI2MyIvPgo8cGF0aCBkPSJNMjQgMjZjMC01LjMwMi00LjI5OC05LjYtOS42LTkuNlM0LjggMjAuNjk4IDQuOCAyNiIgZmlsbD0iIzk5NzI2MyIvPgo8L3N2Zz4=" alt="Cole Adams">
+                                <div class="recipient-info">
+                                    <div class="name">Cole Adams</div>
+                                    <div class="role">Sales Team Leader</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preview-item">
+                        <span class="label">Frequency:</span>
+                        <span class="value">Monthly (1st at 09:00 AM, PST)</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="label">Email Subject:</span>
+                        <span class="value">Monthly Sentiment Overview</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="label">Email Body:</span>
+                        <div class="email-body-preview">
+                            <p>Hello Team,</p>
+                            <p>Please find the attached Monthly Sentiment...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="save-btn">Save</button>
+
+                <!-- Scheduled Reports List -->
+                <div class="scheduled-reports">
+                    <h3>Scheduled Reports</h3>
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-name">Monthly Top Issues Report</div>
+                            <div class="report-schedule">Next: 1st of every month at 9:00 AM</div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="remove-btn">Remove</button>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-name">Weekly Performance Report</div>
+                            <div class="report-schedule">Next: Every Monday at 9:00 AM</div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="remove-btn">Remove</button>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-name">Quarterly Financial Overview</div>
+                            <div class="report-schedule">Next: 1st of every quarter at 9:00 AM</div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="remove-btn">Remove</button>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/6_report_schedule_script.js"></script>
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

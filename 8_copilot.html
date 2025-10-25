@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Assistant</title>
+    <link rel="stylesheet" href="css/8_copilot_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+        <div class="chat-container">
+            <!-- Header -->
+            <div class="chat-header">
+                <div class="header-left">
+                    <h1>AI Chat Assistant</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-purple" id="newChatBtn">
+                        <i class="fas fa-plus"></i> New Chat
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Example conversation -->
+                <div class="message user-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Please generate a report analyzing the Marketing department's sentiment trends over the past month and indicate any areas that need immediate attention.</p>
+                    </div>
+                </div>
+
+                <div class="message assistant-message">
+                    <div class="message-avatar">
+                        <img src="images/jack-avatar.svg" alt="Jack" class="avatar-image">
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="assistant-name">Jack (HR Copilot)</span>
+                        </div>
+                        <p>Your report is ready! If you have any more questions or need further help, just let me know. I'm here for you!</p>
+                        
+                        <!-- Report Card -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <h3>Dynamic Report Viewer</h3>
+                                <div class="report-actions">
+                                    <button class="btn-purple btn-small" onclick="previewReport()">
+                                        <i class="fas fa-eye"></i> Preview
+                                    </button>
+                                    <button class="btn-purple btn-small" onclick="downloadReport()">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="btn-purple btn-small" onclick="sendReport()">
+                                        <i class="fas fa-paper-plane"></i> Send
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="report-content">
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>Real-time charts and graphs showing overall and departmental sentiment data.</p>
+                                </div>
+                                <div class="insights">
+                                    <h4>Actionable Insights</h4>
+                                    <p>The Marketing department's average negative sentiment over the past month is 35%, with notable spikes on the 12th and 26th. Key issues include workload overload and communication delays.</p>
+                                    <p>Recommended actions include increasing <span class="highlight">Team Meetings</span> and conducting an in-depth <span class="highlight">Feedback Survey</span>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message user-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Then, where can I view the sentiment of each employee?</p>
+                    </div>
+                </div>
+
+                <div class="message assistant-message">
+                    <div class="message-avatar">
+                        <img src="images/jack-avatar.svg" alt="Jack" class="avatar-image">
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="assistant-name">Jack (HR Copilot)</span>
+                        </div>
+                        <p>Absolutely! You can find detailed employee sentiment by navigating to the 'Employee' menu at the top of your dashboard. There's a dedicated section for sentiment analysis there. Alternatively, you can click the button below to access it directly:</p>
+                        <button class="btn-purple" onclick="viewEmployeeSentiment()">
+                            <i class="fas fa-users"></i> View Employee Sentiment
+                        </button>
+                        <p>Let me know if there's anything else I can assist you with!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-area">
+                <div class="input-container">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Type your message..." 
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Modal -->
+        <div id="reportModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Report Preview</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="report-preview">
+                        <h3>Marketing Department Sentiment Analysis Report</h3>
+                        <div class="chart-container">
+                            <canvas id="sentimentChart"></canvas>
+                        </div>
+                        <div class="report-details">
+                            <h4>Key Findings:</h4>
+                            <ul>
+                                <li>Average negative sentiment: 35%</li>
+                                <li>Peak dates: 12th and 26th</li>
+                                <li>Main issues: Workload overload, communication delays</li>
+                            </ul>
+                            <h4>Recommended Actions:</h4>
+                            <ul>
+                                <li>Increase team meeting frequency</li>
+                                <li>Conduct in-depth feedback surveys</li>
+                                <li>Improve internal communication processes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/8_copilot_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

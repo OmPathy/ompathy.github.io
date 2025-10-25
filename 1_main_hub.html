@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmPathy Hub</title>
+    <link rel="stylesheet" href="css/1_main_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">   
+
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>OmPathy Hub</h1>
+                    <p class="subtitle">Real-time Sentiment Trend Report</p>
+                </div>
+                <div class="header-right">
+                    <div class="notifications">
+                        <div class="notification-container">
+                            <span class="notification-badge">2</span>
+                            <span class="notification-icon">🔔</span>
+                        </div>
+                        <div class="notification-container">
+                            <span class="notification-badge">2</span>
+                            <span class="notification-icon">🔔</span>
+                        </div>
+                        <div class="user-avatar"></div>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-d">D</button>
+                        <button class="btn-weekly active">WEEKLY</button>
+                        <button class="btn-m">M</button>
+                        <button class="settings-btn">⚙️</button>
+                    </div>
+                    <div class="filters">
+                        <button class="filter-btn">ALL</button>
+                        <select class="department-select">
+                            <option>Select Department</option>
+                            <option>Product Management</option>
+                            <option>Marketing</option>
+                            <option>Sales Ops</option>
+                            <option>Customer Support</option>
+                        </select>
+                        <select class="employee-select">
+                            <option>Employee Name</option>
+                        </select>
+                        <input type="text" placeholder="Date Range" class="date-range">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Top Cards -->
+            <div class="top-cards">
+                <div class="card mood-card">
+                    <h3>Mood Trend</h3>
+                    <div class="mood-value">
+                        <span class="mood-text">Very Good</span>
+                        <span class="mood-percentage">(+3%)</span>
+                    </div>
+                </div>
+                <div class="card score-card">
+                    <h3>Organization Score</h3>
+                    <div class="score-value">89 / 100</div>
+                </div>
+                <div class="card attention-card">
+                    <h3>Employees Need Attention</h3>
+                    <div class="attention-value">
+                        <span class="attention-number">14</span>
+                        <span class="attention-change">(+3)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Department Burnout Section -->
+            <div class="burnout-section">
+                <h3>Department Burnout Outlook (7-Day) ℹ️</h3>
+                <div class="burnout-bars">
+                    <div class="burnout-item marketing-item">
+                        <span class="department-name">Marketing</span>
+                        <div class="burnout-bar">
+                            <div class="bar-fill marketing-bar"></div>
+                        </div>
+                        <div class="burnout-level">
+                            <span class="level-number high">76</span>
+                            <span class="level-text"> / High</span>
+                        </div>
+                        <div class="action-plan-container" onclick="toggleMarketingPlan()">
+                            <span class="action-plan">◆ Action Plan</span>
+                            <span class="dropdown-arrow" id="marketing-arrow">▼</span>
+                        </div>
+                        <div class="detailed-action-plan" id="marketing-details">
+                            <div class="action-item">
+                                <div class="action-title">Team-Building Workshop</div>
+                                <div class="action-description">Encourages collaboration and open communication, helping relieve tension within the team.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+15%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">One-on-One Counseling Sessions</div>
+                                <div class="action-description">Offers personalized support and stress management strategies, reducing the risk of burnout.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+20%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Redistribute Workload & Provide Flexible Scheduling</div>
+                                <div class="action-description">Eases pressure on overburdened team members and allows for better work-life balance.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+12%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Leadership Training & Check-Ins</div>
+                                <div class="action-description">Equips team leaders with tools to detect early signs of burnout and address concerns proactively.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+10%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Mental Health Resources & Break Policies</div>
+                                <div class="action-description">Promotes a supportive culture where employees feel safe taking short breaks or using available resources.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+8%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="burnout-item sales-item">
+                        <span class="department-name">Sales</span>
+                        <div class="burnout-bar">
+                            <div class="bar-fill sales-bar"></div>
+                        </div>
+                        <div class="burnout-level">
+                            <span class="level-number moderate">65</span>
+                            <span class="level-text"> / Moderate</span>
+                        </div>
+                        <div class="action-plan-container" onclick="toggleSalesPlan()">
+                            <span class="action-plan">◆ Action Plan</span>
+                            <span class="dropdown-arrow" id="sales-arrow">▼</span>
+                        </div>
+                        <div class="detailed-action-plan" id="sales-details">
+                            <div class="action-item">
+                                <div class="action-title">Sales Skills Enhancement Training</div>
+                                <div class="action-description">Provides advanced sales techniques and customer relationship management skills to boost confidence and performance.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+18%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Realistic Target Setting & Performance Review</div>
+                                <div class="action-description">Adjusts sales targets to achievable levels and implements regular performance feedback sessions.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+15%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Incentive Program & Recognition System</div>
+                                <div class="action-description">Introduces performance-based rewards and public recognition to motivate the sales team.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+12%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Stress Management & Work-Life Balance</div>
+                                <div class="action-description">Offers stress reduction workshops and flexible scheduling to prevent burnout in high-pressure sales environment.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+10%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="burnout-item support-item">
+                        <span class="department-name">Customer Support</span>
+                        <div class="burnout-bar">
+                            <div class="bar-fill support-bar"></div>
+                        </div>
+                        <div class="burnout-level">
+                            <span class="level-number low">30</span>
+                            <span class="level-text"> / Low</span>
+                        </div>
+                        <div class="action-plan-container" onclick="toggleSupportPlan()">
+                            <span class="action-plan">◆ Action Plan</span>
+                            <span class="dropdown-arrow" id="support-arrow">▼</span>
+                        </div>
+                        <div class="detailed-action-plan" id="support-details">
+                            <div class="action-item">
+                                <div class="action-title">Best Practice Sharing Program</div>
+                                <div class="action-description">Maintains current excellent performance by sharing successful strategies across the team and other departments.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+5%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Employee Recognition & Appreciation</div>
+                                <div class="action-description">Continues to recognize outstanding performance and maintains high morale through regular appreciation programs.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+8%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Continuous Learning & Development</div>
+                                <div class="action-description">Provides ongoing training opportunities to keep skills sharp and maintain engagement levels.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+6%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                            <div class="action-item">
+                                <div class="action-title">Team Communication & Feedback</div>
+                                <div class="action-description">Maintains open communication channels and regular feedback sessions to sustain positive team dynamics.</div>
+                                <div class="action-metrics">
+                                    <span class="metric-label">Action Effectiveness Score (AES)</span>
+                                    <span class="metric-value">+4%</span>
+                                    <button class="plan-btn">Plan it!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="burnout-legend">
+                    <span class="legend-item">⚫ 0-30 = Low | 31-70 = Moderate | 71-100 = High</span>
+                </div>
+            </div>
+
+            <!-- Middle Section -->
+            <div class="middle-section">
+                <!-- Mood Meter Chart -->
+                <div class="mood-meter-section">
+                    <h3>Mood Meter / Survey & Chat Response Rate</h3>
+                    <div class="sentiment-score-label">
+                        <span>Sentiment Score</span>
+                    </div>
+                    <div class="mood-chart-container">
+                        <div class="mood-scale">
+                            <div class="emoji-scale">
+                                <div class="emoji-item" data-mood="angry">😠</div>
+                                <div class="emoji-item" data-mood="sad">😢</div>
+                                <div class="emoji-item" data-mood="neutral">😐</div>
+                                <div class="emoji-item" data-mood="happy">😊</div>
+                                <div class="emoji-item" data-mood="excited">😄</div>
+                            </div>
+                        </div>
+                        <div class="chart-area">
+                            <canvas id="moodChart" width="400" height="200"></canvas>
+                            <div class="chart-dates">
+                                <span>Dec 30</span>
+                                <span>Jan 6</span>
+                                <span>Jan 13</span>
+                                <span>Jan 20</span>
+                                <span>Jan 27</span>
+                                <span>Feb 3</span>
+                            </div>
+                        </div>
+                        <div class="response-rate">
+                            <div class="response-label">Response Rate (%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Insights -->
+                <div class="insights-section">
+                    <h3>Key Insights & Trends</h3>
+                    <div class="insights-content">
+                        <div class="insight-item clickable" data-insight="overall">
+                            <h4>Overall Sentiment</h4>
+                            <p>The overall sentiment for the organization has shown a positive trend over the last weeks, with a notable increase in employee satisfaction scores <span class="trend-up">(+11%)</span>.</p>
+                        </div>
+                        <div class="insight-item clickable" data-insight="departmental">
+                            <h4>Departmental Insights</h4>
+                            <p>The Marketing department has experienced the most significant improvement in sentiment <span class="trend-up">(+9%)</span>, attributed to recent team-building initiatives.</p>
+                        </div>
+                        <div class="insight-item clickable" data-insight="challenges">
+                            <h4>Key Challenges</h4>
+                            <p>Despite positive trends, the IT department faces <span class="challenge-link">ongoing challenges with workload management</span> that require attention.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="bottom-section">
+                <!-- Age Demographics -->
+                <div class="demographics-section">
+                    <h3>By Age</h3>
+                    <div class="pie-chart-container">
+                        <canvas id="ageChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tenure Demographics -->
+                <div class="tenure-section">
+                    <h3>By Tenure</h3>
+                    <div class="pie-chart-container">
+                        <canvas id="tenureChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sentiment Distribution -->
+                <div class="sentiment-distribution">
+                    <div class="distribution-tabs">
+                        <button class="tab-btn active">Sentiment Score</button>
+                        <button class="tab-btn">Burnout Risk Score</button>
+                        <button class="tab-btn">Response Rate</button>
+                    </div>
+                    <div class="distribution-chart">
+                        <canvas id="distributionChart" width="300" height="150"></canvas>
+                        <div class="distribution-labels">
+                            <span>0%</span>
+                            <span>50%</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="avg-score">Avg. 79</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="calendar-section">
+                <h3>Upcoming Holidays / Events</h3>
+                <div class="calendar-container">
+                    <button class="calendar-nav prev" id="prevBtn">◀</button>
+                    <div class="calendar-events">
+                        <div class="event-card past">
+                            <div class="event-date">Sep 1, 2025</div>
+                            <div class="event-title">Labor Day</div>
+                            <div class="event-type">(H-18)</div>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-date">Sep 23, 2025</div>
+                            <div class="event-title">Team Building</div>
+                            <div class="event-subtitle">(Marketing)</div>
+                            <div class="event-type">(D-40)</div>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-date">Sep 24, 2025</div>
+                            <div class="event-title">Performance Review</div>
+                            <div class="event-subtitle">(Sales)</div>
+                            <div class="event-type">(D-41)</div>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-date">Sep 24, 2025</div>
+                            <div class="event-title">Performance Review</div>
+                            <div class="event-subtitle">(Finance)</div>
+                            <div class="event-type">(D-41)</div>
+                        </div>
+                        <div class="event-card highlighted">
+                            <div class="event-date">Oct 13, 2025</div>
+                            <div class="event-title">Thanksgiving</div>
+                            <div class="event-type">(D-60)</div>
+                            <button class="plan-btn">Plan it!</button>
+                        </div>
+                    </div>
+                    <button class="calendar-nav next" id="nextBtn">▶</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+    <script src="js/1_main_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

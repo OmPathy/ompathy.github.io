@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Prompt Creator</title>
+    <link rel="stylesheet" href="css/7_query_custom_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem active"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+    <div class="container">
+        <!-- Header with notifications -->
+        <header class="header">
+            <h1>AI Custom Builder</h1>
+            <div class="user-actions">
+                <div class="notification-icon">
+                    <span class="icon">🔔</span>
+                    <span class="badge">2</span>
+                </div>
+                <div class="notification-icon">
+                    <span class="icon">🔔</span>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-avatar">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ddd'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='%23666' font-size='14'%3EU%3C/text%3E%3C/svg%3E" alt="User Avatar">
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <h1 class="title">Let's create a chat prompt together.</h1>
+            
+            <div class="form-container">
+                <div class="form-group inline-group">
+                    <label for="department">Target Department:</label>
+                    <select id="department" class="dropdown2">
+                        <option value="sales">Sales</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="support">Support</option>
+                        <option value="hr">HR</option>
+                        <option value="finance">Finance</option>
+                        <option value="operations">Operations</option>
+                    </select>
+                </div>
+
+                <div class="form-group inline-group">
+                    <label for="trigger">Trigger Condition:</label>
+                    <select id="trigger" class="dropdown2">
+                        <option value="<5">< 5</option>
+                        <option value="<10">< 10</option>
+                        <option value="<15">< 15</option>
+                        <option value="<20">< 20</option>
+                        <option value="<30">< 30</option>
+                        <option value=">=30">>= 30</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Type of Question:</label>
+                    <div class="question-types">
+                        <div class="question-grid">
+                            <button class="question-btn" data-type="emoji">Emoji</button>
+                            <button class="question-btn" data-type="text">Text</button>
+                            <button class="question-btn active" data-type="slider">Slider</button>
+                            <button class="question-btn" data-type="contextual">Contextual</button>
+                            <button class="question-btn" data-type="priority">Priority</button>
+                            <button class="question-btn" data-type="comparison">Comparison</button>
+                            <button class="question-btn" data-type="scenario">Scenario</button>
+                            <button class="question-btn" data-type="graph">Graph</button>
+                            <button class="question-btn" data-type="mood">Mood Journal</button>
+                            <button class="question-btn" data-type="multiple">Multiple Choice</button>
+                            <button class="question-btn" data-type="rating">Rating Scale</button>
+                            <button class="question-btn" data-type="yesno">Yes/No</button>
+                            <button class="question-btn" data-type="dropdown">Dropdown</button>
+                            <button class="question-btn" data-type="checkbox">Checkbox</button>
+                            <button class="question-btn" data-type="date">Date Picker</button>
+                            <button class="question-btn" data-type="time">Time Picker</button>
+                            <button class="question-btn" data-type="file">File Upload</button>
+                            <button class="question-btn" data-type="location">Location</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="description">
+                    <p>Let's start by selecting the basic question information. Feel free to share your opinion using the chat function.</p>
+                </div>
+
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <button class="add-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 4V16M4 10H16" stroke="#999" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <input type="text" class="chat-input" placeholder="Type your message...">
+                        <button class="send-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+    <script src="js/7_query_custom_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</html>

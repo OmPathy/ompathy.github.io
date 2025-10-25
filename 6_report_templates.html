@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & Reports</title>
+    <link rel="stylesheet" href="css/6_report_templates_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">   
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="icon">📊</div>
+                <h1>Analytics & Reports</h1>
+            </div>
+            <div class="header-right">
+                <div class="notification-icon">🔔</div>
+                <div class="user-avatar"></div>
+            </div>
+        </header>
+
+        <!-- Report Templates Section -->
+        <section class="report-templates">
+            <h2>Report Templates</h2>
+            
+            <div class="templates-grid">
+                <!-- Quarterly Summary Template -->
+                <div class="template-card">
+                    <h3>Quarterly Summary</h3>
+                    <p>A comprehensive summary of quarterly performance metrics and insights.</p>
+                    <div class="template-actions">
+                        <button class="btn btn-primary">Generate PDF</button>
+                        <button class="btn btn-secondary">Generate Excel</button>
+                        <button class="btn btn-tertiary">Send via Email</button>
+                    </div>
+                </div>
+
+                <!-- Monthly Top Issues Template -->
+                <div class="template-card">
+                    <h3>Monthly Top Issues</h3>
+                    <p>A detailed analysis of the top issues faced during the month.</p>
+                    <div class="template-actions">
+                        <button class="btn btn-primary">Generate PDF</button>
+                        <button class="btn btn-secondary">Generate Excel</button>
+                        <button class="btn btn-tertiary">Send via Email</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="more-templates">
+                <a href="#" class="more-link">More Templates Available 🔍</a>
+            </div>
+        </section>
+
+        <!-- Create New Template Section -->
+        <section class="create-template">
+            <h2>Create a New Template</h2>
+            <p>Create a template that suits your business needs.</p>
+
+            <form class="template-form">
+                <!-- Template Title -->
+                <div class="form-group">
+                    <label for="template-title">Template Title</label>
+                    <input type="text" id="template-title" placeholder="Enter template name">
+                </div>
+
+                <!-- Report Categories -->
+                <div class="form-group">
+                    <label>Report Categories</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="category" value="sentiment">
+                            <span>Sentiment</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="category" value="sos-request">
+                            <span>SOS Request</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="category" value="feedback">
+                            <span>Feedback</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Reporting Period -->
+                <div class="form-group">
+                    <label for="reporting-period">Reporting Period</label>
+                    <select id="reporting-period">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+
+                <!-- Target Section -->
+                <div class="form-group">
+                    <label>Target</label>
+                    <div class="target-options">
+                        <div class="target-option">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="target" value="department">
+                                <span>Department</span>
+                            </label>
+                            <select class="target-select">
+                                <option value="all">All Departments</option>
+                                <option value="hr">HR</option>
+                                <option value="it">IT</option>
+                                <option value="finance">Finance</option>
+                            </select>
+                        </div>
+                        
+                        <div class="target-option">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="target" value="employee-group">
+                                <span>Employee Group</span>
+                            </label>
+                            <select class="target-select">
+                                <option value="all">All Employees</option>
+                                <option value="managers">Managers</option>
+                                <option value="seniors">Senior Staff</option>
+                            </select>
+                        </div>
+                        
+                        <div class="target-option">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="target" value="role-selection">
+                                <span>Role Selection</span>
+                            </label>
+                            <select class="target-select">
+                                <option value="engineers">Engineers</option>
+                                <option value="designers">Designers</option>
+                                <option value="analysts">Analysts</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keywords -->
+                <div class="form-group">
+                    <label for="keywords-input">Keywords</label>
+                    <div class="keywords-input-container">
+                        <input type="text" id="keywords-input" placeholder="e.g. workload, deadlines, performance" class="keywords-input">
+                        <div class="keywords-display">
+                            <!-- Dynamic keywords will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Visualization Options -->
+                <div class="form-group">
+                    <label>Data Visualization Options</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="visualization" value="charts">
+                            <span>Charts</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="visualization" value="graphs">
+                            <span>Graphs</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="visualization" value="tables">
+                            <span>Tables</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="visualization" value="heatmaps">
+                            <span>Heatmaps</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="visualization" value="auto" checked>
+                            <span>Auto</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Export Format -->
+                <div class="form-group">
+                    <label>Export Format</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="export-format" value="pdf" checked>
+                            <span>PDF</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-format" value="excel">
+                            <span>Excel</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="export-format" value="csv">
+                            <span>CSV</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-save">Save Template</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+
+    <script src="js/6_report_templates_script.js"></script>
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

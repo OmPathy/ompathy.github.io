@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contextual Response Template Builder</title>
+    <link rel="stylesheet" href="css/7_query_frequency_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="main-sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem active"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Contextual Response Template Builder</h1>
+            <div class="user-actions">
+                <div class="notification-icon">
+                    <span class="icon">🔔</span>
+                    <span class="badge">2</span>
+                </div>
+                <div class="notification-icon">
+                    <span class="icon">🔔</span>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-avatar">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ddd'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='%23666' font-size='14'%3EU%3C/text%3E%3C/svg%3E" alt="User Avatar">
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-item">
+                    <span class="icon">📅</span>
+                    <span>Meeting End</span>
+                </div>
+                <div class="sidebar-item active">
+                    <span class="icon">⏰</span>
+                    <span>Project Deadline Approaching</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">👤</span>
+                    <span>Return from Leave</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">⚠️</span>
+                    <span>Overtime Detected</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">👤</span>
+                    <span>Key Phrase Detected</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">💬</span>
+                    <span>New Hire Onboarding</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">📝</span>
+                    <span>Training Feedback</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">🏠</span>
+                    <span>Remote Work Check-In</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">👥</span>
+                    <span>Team Collaboration</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">⏰</span>
+                    <span>End-of-Day Check-in</span>
+                </div>
+            </aside>
+
+            <!-- Main Form Area -->
+            <main class="form-area">
+                <h2>Customize Deadline-Related Feedback Template</h2>
+                
+                <!-- Event Trigger Selector -->
+                <div class="form-section">
+                    <label class="form-label">Event Trigger Selector:</label>
+                    <div class="dropdown">
+                        <select id="eventTrigger">
+                            <option value="calendar-deadline">Calendar - Deadline Approaching</option>
+                            <option value="project-milestone">Project Milestone</option>
+                            <option value="task-overdue">Task Overdue</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Pre-Filled Question List -->
+                <div class="form-section">
+                    <label class="form-label">Pre-Filled Question List:</label>
+                    
+                    <div class="question-item">
+                        <div class="question-content">
+                            <input type="text" class="question-input" value="How did the project timeline work out—did it feel rushed or balanced?" placeholder="Enter question">
+                            <button class="delete-btn">🗑️</button>
+                        </div>
+                        <div class="answer-format">
+                            <label>Answer Format</label>
+                            <select>
+                                <option value="multiple-choice">Multiple-Choice Questions</option>
+                                <option value="text">Text Response</option>
+                                <option value="rating">Rating Scale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <div class="question-content">
+                            <input type="text" class="question-input" value="What's one thing about the schedule you'd change now that the project is done?" placeholder="Enter question">
+                            <button class="delete-btn">🗑️</button>
+                        </div>
+                        <div class="answer-format">
+                            <label>Answer Format</label>
+                            <select>
+                                <option value="descriptive">Descriptive Form Answers</option>
+                                <option value="multiple-choice">Multiple-Choice Questions</option>
+                                <option value="rating">Rating Scale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <div class="question-content">
+                            <input type="text" class="question-input" value="How would you rate your overall job satisfaction? (1-5)" placeholder="Enter question">
+                            <button class="delete-btn">🗑️</button>
+                        </div>
+                        <div class="answer-format">
+                            <label>Answer Format</label>
+                            <select>
+                                <option value="slider">Slider Scale Questions</option>
+                                <option value="multiple-choice">Multiple-Choice Questions</option>
+                                <option value="text">Text Response</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="add-question-btn">Add Question</button>
+                </div>
+
+                <!-- Preview Pane -->
+                <div class="form-section">
+                    <label class="form-label">Preview Pane:</label>
+                    <div class="preview-pane">
+                        <ol class="preview-list">
+                            <li>How did the project timeline work out—did it feel rushed or balanced?</li>
+                            <li>What's one thing about the schedule you'd change now that the project is done?</li>
+                            <li>How manageable was the final phase? (Rate 1-5)</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Trigger Settings -->
+                <div class="form-section">
+                    <div class="trigger-settings">
+                        <input type="checkbox" id="triggerTemplate" checked>
+                        <label for="triggerTemplate">Trigger this template</label>
+                        <input type="number" value="1" min="1" max="30" class="days-input">
+                        <span>day(s) after project completion to evaluate the experience of the deadline.</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button class="save-btn">Save Template</button>
+                </div>
+
+                <!-- Note -->
+                <div class="note">
+                    <p><strong>Note:</strong> This template will be automatically triggered based on your selected event.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+
+    <script src="js/7_query_frequency_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

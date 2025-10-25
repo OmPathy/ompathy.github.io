@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & Reports</title>
+    <link rel="stylesheet" href="css/6_report_custominsight_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+<!-- Main Content -->
+        <main class="main-content">   
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">📊 Analytics & Reports</h1>
+                <div class="user-section">
+                    <div class="notification">
+                        <span class="notification-icon">🔔</span>
+                        <span class="notification-badge">0</span>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNGRkY1RjUiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzk5NzI2MyIvPgo8cGF0aCBkPSJNMTAgMzJjMC02IDQtMTAgMTAtMTBzMTAgNCAxMCAxMCIgZmlsbD0iIzk5NzI2MyIvPgo8L3N2Zz4K" alt="User Avatar">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+            <!-- Custom Analysis Section -->
+            <section class="analysis-section">
+                <h2 class="section-title">Custom Analysis</h2>
+                
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="period">Select Period</label>
+                            <select id="period" class="form-select">
+                                <option value="Q1 2025">Q1 2025</option>
+                                <option value="Q2 2025">Q2 2025</option>
+                                <option value="Q3 2025">Q3 2025</option>
+                                <option value="Q4 2025">Q4 2025</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select id="department" class="form-select">
+                                <option value="Marketing">Marketing</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Sales">Sales</option>
+                                <option value="HR">HR</option>
+                                <option value="Finance">Finance</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="keywords">Issue Keywords</label>
+                            <select id="keywords" class="form-select">
+                                <option value="Workload, Work-life balance">Workload, Work-life balance</option>
+                                <option value="Communication">Communication</option>
+                                <option value="Management">Management</option>
+                                <option value="Career Development">Career Development</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button id="generateBtn" class="generate-btn">Generate</button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2 class="section-title">Results</h2>
+                
+                <div class="charts-container">
+                    <div class="chart-item">
+                        <div class="chart-description">
+                            <p><strong>Workload Sentiment:</strong> The bar chart shows high feedback volume with predominantly negative sentiment, indicating significant workload concerns.</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="barChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-item">
+                        <div class="chart-description">
+                            <p><strong>Work-life Balance:</strong> The pie chart reveals that the majority of feedback is unresolved, highlighting ongoing issues with work-life balance.</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="pieChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="exportBtn" class="action-btn export-btn">Export</button>
+                    <button id="sendBtn" class="action-btn send-btn">Send</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/6_report_custominsight_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

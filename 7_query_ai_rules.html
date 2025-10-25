@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Response Rules</title>
+    <link rel="stylesheet" href="css/7_query_ai_rules_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem active"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+    <div class="container">
+        <header class="header">
+            <h1>AI Response Rules</h1>
+            <div class="user-actions">
+                <div class="notification-icon">
+                    <span class="icon">🔔</span>
+                    <span class="badge">2</span>
+                </div>
+                <div class="notification-icon">
+                    <span class="icon">🔔</span>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-avatar">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ddd'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='%23666' font-size='14'%3EU%3C/text%3E%3C/svg%3E" alt="User Avatar">
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="table-container">
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Rule Name</th>
+                            <th>Conditions/Keywords</th>
+                            <th>Predefined Response</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Salary Inquiry Rule</td>
+                            <td>"salary"</td>
+                            <td>"Salary-related queries should be ..."</td>
+                            <td>Feb 15, 2025, 10:00 AM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Work Hours Rule</td>
+                            <td>"overtime, working hours"</td>
+                            <td>"Please refer to the overtime policy..."</td>
+                            <td>Jan 16, 2025, 09:30 AM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Benefits Rule</td>
+                            <td>"benefits"</td>
+                            <td>"For benefits inquiries, please contact..."</td>
+                            <td>Dec 21, 2024, 11:15 AM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Promotion Inquiry Rule</td>
+                            <td>"promotion"</td>
+                            <td>"Promotion questions should be ..."</td>
+                            <td>Aug 10, 2024, 02:45 PM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Performance Review Rule</td>
+                            <td>"performance"</td>
+                            <td>"Performance reviews are held ..."</td>
+                            <td>Jul 11, 2024, 10:20 AM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Leave Policy Rule</td>
+                            <td>"vacation"</td>
+                            <td>"Please refer to the employee ..."</td>
+                            <td>Apr 16, 2024, 08:00 AM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Expense Reimbursement Rule</td>
+                            <td>"expense"</td>
+                            <td>"Expense claims should be ..."</td>
+                            <td>Feb 21, 2024, 01:30 PM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Training Session Rule</td>
+                            <td>"Training, Workshop"</td>
+                            <td>"Please sign up for training..."</td>
+                            <td>Jan 26, 2024, 01:30 PM</td>
+                            <td>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="addNewRule()">Add New Rule</button>
+                <button class="btn btn-secondary" onclick="showRuleList()">Rule List</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Rule Modal -->
+    <div id="addRuleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Rule</h3>
+                <span class="close" onclick="closeModal('addRuleModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="ruleName">Rule Name:</label>
+                    <input type="text" id="ruleName" placeholder="Enter rule name">
+                </div>
+                <div class="form-group">
+                    <label for="ruleKeywords">Keywords (comma-separated):</label>
+                    <input type="text" id="ruleKeywords" placeholder="Enter keywords">
+                </div>
+                <div class="form-group">
+                    <label for="ruleResponse">Predefined Response:</label>
+                    <textarea id="ruleResponse" placeholder="Enter predefined response"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addRuleModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveNewRule()">Save Rule</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rule List Modal -->
+    <div id="ruleListModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rule Statistics</h3>
+                <span class="close" onclick="closeModal('ruleListModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="ruleListContent">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal('ruleListModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Rule Modal -->
+    <div id="editRuleModal" class="modal">
+        <div class="modal-content edit-rule-modal">
+            <div class="modal-header">
+                <h3>Edit Rule</h3>
+                <span class="close" onclick="closeModal('editRuleModal')">&times;</span>
+            </div>
+            <div class="modal-body edit-rule-body">
+                <div class="edit-form-container">
+                    <div class="form-group">
+                        <label for="editRuleTitle">Rule Title</label>
+                        <input type="text" id="editRuleTitle" placeholder="Enter rule title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRuleKeywords">Conditions/Keywords</label>
+                        <input type="text" id="editRuleKeywords" placeholder="Enter keywords">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRuleResponse">Predefined Response</label>
+                        <textarea id="editRuleResponse" placeholder="Enter predefined response"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editResponseTone">Response Tone</label>
+                        <select id="editResponseTone">
+                            <option value="formal">Formal</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="preview-section">
+                    <h4>Preview</h4>
+                    <div class="preview-content">
+                        <p id="previewText">If an employee asks, "How about a salary increase?", then AI responds: "Salary-related queries should be directed to HR."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('editRuleModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEditedRule()">Save Rule</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="js/7_query_ai_rules_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Request Details</title>
+    <link rel="stylesheet" href="css/details.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+<!-- Main Content -->
+        <main class="main-content">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="back-btn" onclick="goBack()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <h1 class="page-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    SOS Request Details
+                </h1>
+            </div>
+            <div class="header-right">
+                <div class="notification-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 8A6 6 0 0 0 6 8C6 15 3 17 3 17H21S18 15 18 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M13.73 21A2 2 0 0 1 10.27 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="notification-badge">2</span>
+                </div>
+                <div class="user-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face" alt="User Avatar">
+                </div>
+            </div>
+        </header>
+
+        
+            <!-- Incident Details Section -->
+            <section class="incident-details">
+                <h2>Incident Details</h2>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <label>Request ID:</label>
+                        <span id="request-id">REQ-1022</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Incident Location:</label>
+                        <span id="incident-location">Online Meeting</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Category:</label>
+                        <span id="category">Racial Discrimination</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Incident Time:</label>
+                        <span id="incident-time">March 1, 2025, 10:30 AM</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Date & Time:</label>
+                        <span id="date-time">2025-03-10 09:00 AM</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Evidence Attachments:</label>
+                        <span id="evidence-attachments">N/A</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Department:</label>
+                        <span id="department">Marketing</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Reporter Anonymity:</label>
+                        <span id="reporter-anonymity">Full Anonymous</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Status:</label>
+                        <span id="status" class="status-badge pending">Pending</span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Assigned To:</label>
+                        <span id="assigned-to">John Doe</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Incident Description -->
+            <section class="description-section">
+                <h2>Incident Description</h2>
+                <p id="description">During the meeting, a high-level manager made racially discriminatory comments, which caused discomfort and offense to the attendees.</p>
+            </section>
+
+            <!-- Resolution Section (for resolved cases) -->
+            <section id="resolution-section" class="resolution-section" style="display: none;">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Final Resolution
+                </h2>
+                <div class="resolution-content">
+                    <p id="resolution-text"></p>
+                </div>
+            </section>
+
+            <!-- Recommended Action Plans -->
+            <section class="action-plans">
+                <div class="action-plans-header">
+                    <h2>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Recommended Action Plans
+                    </h2>
+                </div>
+                <div id="action-plans-list">
+                    <div class="action-plan-item">
+                        <div class="plan-content">
+                            <span class="plan-text">Initiate Immediate Investigation - Expected Improvement: <span class="improvement-rate positive">+20%</span> <span class="aes-tag">(AES)</span></span>
+                            <button class="plan-btn" onclick="executePlan(0)">Plan It!</button>
+                        </div>
+                    </div>
+                    <div class="action-plan-item">
+                        <div class="plan-content">
+                            <span class="plan-text">Conduct Diversity & Sensitivity Training - Expected Improvement: <span class="improvement-rate positive">+15%</span> <span class="aes-tag">(AES)</span></span>
+                            <button class="plan-btn" onclick="executePlan(1)">Plan It!</button>
+                        </div>
+                    </div>
+                    <div class="action-plan-item">
+                        <div class="plan-content">
+                            <span class="plan-text">Schedule Urgent Leadership Review - Expected Improvement: <span class="improvement-rate positive">+18%</span> <span class="aes-tag">(AES)</span></span>
+                            <button class="plan-btn" onclick="executePlan(2)">Plan It!</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="action-note">This action plan is based on current negative sentiment trends. Please take necessary steps promptly.</p>
+            </section>
+
+            <!-- Comments Section -->
+            <section class="comments-section">
+                <div class="comment-input-container">
+                    <textarea id="comment-input" placeholder="Add a comment..." rows="3"></textarea>
+                    <button class="send-btn" onclick="addComment()">Send</button>
+                </div>
+                <div id="comments-list">
+                    <!-- Comments will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="action-buttons">
+                <button class="action-btn primary" onclick="openAssignModal()">Assign / Re-Assign</button>
+                <button class="action-btn secondary" onclick="openStatusModal()">Update Status</button>
+                <button class="action-btn secondary" onclick="requestEvidence()">Request More Evidence</button>
+                <button class="action-btn warning" onclick="escalateTicket()">Escalate to C-level</button>
+                <button class="action-btn success" onclick="closeTicket()">Close/Resolve</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Assign Modal -->
+    <div id="assignModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign Ticket</h3>
+                <button class="close-btn" onclick="closeModal('assignModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="assignee-select">Select Assignee:</label>
+                <select id="assignee-select">
+                    <option value="">Select an assignee...</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('assignModal')">Cancel</button>
+                <button class="btn-confirm" onclick="confirmAssignment()">Assign</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Status</h3>
+                <button class="close-btn" onclick="closeModal('statusModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="status-select">Select Status:</label>
+                <select id="status-select">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('statusModal')">Cancel</button>
+                <button class="btn-confirm" onclick="confirmStatusUpdate()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Escalate Confirmation Modal -->
+    <div id="escalateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Escalation</h3>
+                <button class="close-btn" onclick="closeModal('escalateModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to escalate this ticket to C-level management?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('escalateModal')">Cancel</button>
+                <button class="btn-confirm" onclick="confirmEscalate()">Escalate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Close Ticket Confirmation Modal -->
+    <div id="closeTicketModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Close Ticket</h3>
+                <button class="close-btn" onclick="closeModal('closeTicketModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to close this ticket?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('closeTicketModal')">Cancel</button>
+                <button class="btn-confirm" onclick="confirmCloseTicket()">Close Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Execute Plan Confirmation Modal -->
+    <div id="executePlanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Execute Plan</h3>
+                <button class="close-btn" onclick="closeModal('executePlanModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="executePlanMessage">Are you sure you want to execute this action plan?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('executePlanModal')">Cancel</button>
+                <button class="btn-confirm" onclick="confirmExecutePlan()">Execute</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading-indicator" style="display: none;">
+        <div class="spinner"></div>
+        <span>Loading...</span>
+    </div>
+
+    <script src="js/details.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

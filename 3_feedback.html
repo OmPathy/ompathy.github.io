@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Dashboard</title>
+    <link rel="stylesheet" href="css/3_feedback_style.css">
+</head>
+<body>
+
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item active dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Feedback Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="notifications">
+                        <div class="notification-container">
+                            <span class="notification-badge">2</span>
+                            <span class="notification-icon">🔔</span>
+                        </div>
+                        <div class="notification-container">
+                            <span class="notification-badge">2</span>
+                            <span class="notification-icon">🔔</span>
+                        </div>
+                        <div class="user-avatar"></div>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-d">D</button>
+                        <button class="btn-weekly active">WEEKLY</button>
+                        <button class="btn-m">M</button>
+                        <button class="settings-btn">⚙️</button>
+                    </div>
+                    <div class="filters">
+                        <button class="filter-btn">ALL</button>
+                        <select class="department-select">
+                            <option>Select Department</option>
+                            <option>Product Management</option>
+                            <option>Marketing</option>
+                            <option>Sales Ops</option>
+                            <option>Customer Support</option>
+                        </select>
+                        <select class="employee-select">
+                            <option>Employee Name</option>
+                        </select>
+                        <input type="text" placeholder="Date Range" class="date-range">
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- Priority Analysis -->
+            <div class="priority-section">
+                <h2>Feedback Priority Level Analysis</h2>
+                <div class="priority-stats">
+                    <div class="priority-item low">
+                        <span class="priority-label">Low</span>
+                        <span class="priority-count">45</span>
+                    </div>
+                    <div class="priority-item medium">
+                        <span class="priority-label">Medium</span>
+                        <span class="priority-count">67</span>
+                    </div>
+                    <div class="priority-item high">
+                        <span class="priority-label">High</span>
+                        <span class="priority-count">38</span>
+                    </div>
+                </div>
+                <div class="priority-bar">
+                    <div class="priority-segment low" style="width: 30%;">
+                        <span>30%</span>
+                    </div>
+                    <div class="priority-segment medium" style="width: 45%;">
+                        <span>45%</span>
+                    </div>
+                    <div class="priority-segment high" style="width: 25%;">
+                        <span>25%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Department Feedback -->
+                <div class="department-section">
+                    <h3>Total Feedback by Department</h3>
+                    <div class="department-list">
+                        <div class="department-item" data-department="Product Management">
+                            <span class="department-name">Product Management</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="Sales Ops">
+                            <span class="department-name">Sales Ops</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 72%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="Customer Support">
+                            <span class="department-name">Customer Support</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 58%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="Dev Ops">
+                            <span class="department-name">Dev Ops</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 42%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="Leadership">
+                            <span class="department-name">Leadership</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 35%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="Data Analytics">
+                            <span class="department-name">Data Analytics</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 38%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="R&D">
+                            <span class="department-name">R&D</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 28%;"></div>
+                            </div>
+                        </div>
+                        <div class="department-item" data-department="Info Security">
+                            <span class="department-name">Info Security</span>
+                            <div class="department-bar">
+                                <div class="department-fill" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Management Categories -->
+                <div class="categories-section">
+                    <h3>Product Management Team Feedback by Category</h3>
+                    <div class="categories-list" id="categoriesList">
+                        <div class="category-item">
+                            <span class="category-name">Workload</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Org. Culture</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Wellness</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 35%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Promotion & Reward</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 50%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Relationship with others</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Work Environment</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Org. Policy</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <span class="category-name">Others</span>
+                            <div class="category-bar">
+                                <div class="category-fill" style="width: 25%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Table -->
+            <div class="table-section">
+                <div class="table-controls">
+                    <div class="sort-filter">
+                        <button class="control-btn">Sort by ▼</button>
+                        <button class="control-btn">Filter by ⚙️</button>
+                    </div>
+                </div>
+                <table class="feedback-table">
+                    <thead>
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Employee</th>
+                            <th>Category</th>
+                            <th>Title</th>
+                            <th>Sentiment Score</th>
+                            <th>Priority Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1234567</td>
+                            <td>Jacob Leroy</td>
+                            <td>Promotion & Reward</td>
+                            <td>Doesn't feel my hard work paid off</td>
+                            <td><span class="sentiment-score">70</span></td>
+                            <td><span class="priority-badge medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td>1234568</td>
+                            <td>Jenine Morissette</td>
+                            <td>Workload</td>
+                            <td>Worked overtime over a month now</td>
+                            <td><span class="sentiment-score">50</span></td>
+                            <td><span class="priority-badge high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>1234569</td>
+                            <td>Nicole Dean</td>
+                            <td>Org. Policy</td>
+                            <td>I have a recommendation</td>
+                            <td><span class="sentiment-score">90</span></td>
+                            <td><span class="priority-badge low">Low</span></td>
+                        </tr>
+                        <tr>
+                            <td>1234570</td>
+                            <td>Dave Rowe</td>
+                            <td>Relationship with others</td>
+                            <td>I don't feel comfortable working with...</td>
+                            <td><span class="sentiment-score">65</span></td>
+                            <td><span class="priority-badge medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td>1234571</td>
+                            <td>Sasha Cohen</td>
+                            <td>Relationship with others</td>
+                            <td>My manager doesn't care about me at all</td>
+                            <td><span class="sentiment-score">40</span></td>
+                            <td><span class="priority-badge high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>1234572</td>
+                            <td>Jamie Park</td>
+                            <td>Org. Culture</td>
+                            <td>I don't feel I belong here</td>
+                            <td><span class="sentiment-score">70</span></td>
+                            <td><span class="priority-badge medium">Medium</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="js/3_feedback_script.js"></script>
+
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

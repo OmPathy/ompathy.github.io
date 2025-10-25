@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Analysis Platform</title>
+    <link rel="stylesheet" href="css/5_action_style.css">
+</head>
+<body>
+
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item active"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+
+        <!-- Header navigation -->
+        <header class="header">
+            <div class="user-icons">
+                <div class="notification-icon">🔔</div>
+                <div class="notification-icon">🔔</div>
+                <div class="user-avatar">👤</div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            <!-- Tab navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="team">BY TEAM</button>
+                <button class="tab-btn" data-tab="trait">BY PERSONAL TRAIT</button>
+            </div>
+
+            <!-- Team analysis section -->
+            <div class="analysis-section">
+                <h2>Find the most effective action plan for the selected team</h2>
+                
+                <!-- Drag and drop area and date picker -->
+                <div class="control-area">
+                    <div class="drop-zone" id="dropZone">
+                        <div class="drop-placeholder">
+                            <span>Drag & Drop</span>
+                            <span>the Team</span>
+                        </div>
+                        <div class="selected-team" id="selectedTeam" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="date-range">
+                        <input type="text" value="01 / 2024" class="date-input" id="startDate">
+                        <span>-</span>
+                        <input type="text" value="12 / 2024" class="date-input" id="endDate">
+                    </div>
+                </div>
+
+                <!-- Analyze button -->
+                <button class="analyze-btn" id="analyzeBtn">ANALYZE</button>
+            </div>
+
+            <!-- Team cards grid -->
+            <div class="teams-grid" id="teamsGrid">
+                <div class="team-card" draggable="true" data-team="sales">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=200&h=200&fit=crop&crop=faces" alt="Sales Team">
+                    </div>
+                    <h3>Sales</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="marketing">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces" alt="Marketing Team">
+                    </div>
+                    <h3>Marketing</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="talent">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=faces" alt="Talent Acquisition Team">
+                    </div>
+                    <h3>Talent Acquisition</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="product">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=200&h=200&fit=crop&crop=faces" alt="Product Management Team">
+                    </div>
+                    <h3>Product Management</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="business">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces" alt="Business Intelligence Team">
+                    </div>
+                    <h3>Business Intelligence</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="design">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=200&h=200&fit=crop&crop=faces" alt="UI/UX Design Team">
+                    </div>
+                    <h3>UI/UX Design</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="finance">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=faces" alt="Finance Team">
+                    </div>
+                    <h3>Finance</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-team="it">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=faces" alt="Information Technology Team">
+                    </div>
+                    <h3>Information Technology</h3>
+                </div>
+            </div>
+
+            <!-- Personal traits grid -->
+            <div class="traits-grid" id="traitsGrid" style="display: none;">
+                <div class="team-card" draggable="true" data-trait="optimistic">
+                    <div class="team-image">
+                        <img src="images/optimistic.svg" alt="Optimistic">
+                    </div>
+                    <h3>Optimistic</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="innovative">
+                    <div class="team-image">
+                        <img src="images/innovative.svg" alt="Innovative">
+                    </div>
+                    <h3>Innovative</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="collaborative">
+                    <div class="team-image">
+                        <img src="images/collaborative.svg" alt="Collaborative">
+                    </div>
+                    <h3>Collaborative</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="analytical">
+                    <div class="team-image">
+                        <img src="images/analytical.svg" alt="Analytical">
+                    </div>
+                    <h3>Analytical</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="empathetic">
+                    <div class="team-image">
+                        <img src="images/empathetic.svg" alt="Empathetic">
+                    </div>
+                    <h3>Empathetic</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="resilient">
+                    <div class="team-image">
+                        <img src="images/resilient.svg" alt="Resilient">
+                    </div>
+                    <h3>Resilient</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="detail-oriented">
+                    <div class="team-image">
+                        <img src="images/detail-oriented.svg" alt="Detail-Oriented">
+                    </div>
+                    <h3>Detail-Oriented</h3>
+                </div>
+                
+                <div class="team-card" draggable="true" data-trait="leadership">
+                    <div class="team-image">
+                        <img src="images/leadership.svg" alt="Leadership">
+                    </div>
+                    <h3>Leadership</h3>
+                </div>
+            </div>
+
+            <!-- Analysis Results Section -->
+            <div class="analysis-results" id="analysisResults" style="display: none;">
+                <!-- Back Button -->
+                <button class="back-btn" id="backBtn">← Back to Analysis</button>
+                
+                <!-- New Layout: Team Info + Chart + Action Plans -->
+                <div class="analysis-main-container">
+                    <!-- Left: Team Information -->
+                    <div class="team-info-section">
+                        <div class="team-avatar">
+                            <img id="resultTeamImage" src="" alt="Selected Team">
+                        </div>
+                        <h2 id="resultTeamName">Marketing</h2>
+                        <div class="positivity-score">
+                            <span class="score-label">Positivity</span>
+                            <span class="score-value" id="positivityScore">91%</span>
+                        </div>
+                    </div>
+
+                    <!-- Center: Chart Area -->
+                    <div class="chart-section">
+                        <div class="chart-container-new">
+                            <div class="effectiveness-axis">
+                                <div class="axis-label">Effectiveness (%)</div>
+                                <div class="axis-values">
+                                    <span>100</span>
+                                    <span>75</span>
+                                    <span>50</span>
+                                    <span>25</span>
+                                    <span>0</span>
+                                </div>
+                            </div>
+                            <div class="chart-area-new">
+                                <canvas id="effectivenessChart" width="800" height="300"></canvas>
+                                <div class="time-axis">
+                                    <span>2024.01</span>
+                                    <span>2024.06</span>
+                                    <span>2025.01</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Action Plans -->
+                    <div class="action-plans-section">
+                        <div class="action-plan-item">
+                            <h3>Weekly 1-on-1 with HR</h3>
+                            <div class="plan-description">
+                                Frequent 1-on-1s effectively reduce negativity and boost employee mood.
+                            </div>
+                            <button class="plan-it-btn">Plan it!</button>
+                        </div>
+
+                        <div class="action-plan-item">
+                            <h3>Monthly Team Building</h3>
+                            <div class="plan-description">
+                                Team-building activities have received positive feedback from over 85% of employees.
+                            </div>
+                            <button class="plan-it-btn">Plan it!</button>
+                        </div>
+
+                        <div class="action-plan-item">
+                            <h3>Wellness Initiatives</h3>
+                            <div class="plan-description">
+                                Mental health resources, wellness programs, and flexible schedules were moderately effective.
+                            </div>
+                            <button class="plan-it-btn">Plan it!</button>
+                        </div>
+
+                        <div class="action-plan-item">
+                            <h3>Recognition Programs</h3>
+                            <div class="plan-description">
+                                Celebrating achievements through awards, shout-outs, and recognition was very effective in boosting team atmosphere.
+                            </div>
+                            <button class="plan-it-btn">Plan it!</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teams Overview Section in Analysis Results -->
+                <div class="teams-overview">
+                    <h3>Teams Overview</h3>
+                    <div class="teams-grid-results">
+                        <div class="team-card-result" data-team="sales">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=150&h=150&fit=crop&crop=faces" alt="Sales Team">
+                            </div>
+                            <h4>Sales</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="marketing">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=faces" alt="Marketing Team">
+                            </div>
+                            <h4>Marketing</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="talent-acquisition">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=faces" alt="Talent Acquisition Team">
+                            </div>
+                            <h4>Talent Acquisition</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="product-management">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=150&h=150&fit=crop&crop=faces" alt="Product Management Team">
+                            </div>
+                            <h4>Product Management</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="business-intelligence">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Business Intelligence Team">
+                            </div>
+                            <h4>Business Intelligence</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="ui-ux-design">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&h=150&fit=crop&crop=faces" alt="UI/UX Design Team">
+                            </div>
+                            <h4>UI/UX Design</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="finance">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces" alt="Finance Team">
+                            </div>
+                            <h4>Finance</h4>
+                        </div>
+                        
+                        <div class="team-card-result" data-team="information-technology">
+                            <div class="team-image">
+                                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=faces" alt="Information Technology Team">
+                            </div>
+                            <h4>Information Technology</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+</div>
+    <script src="js/5_action_script.js"></script>
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>

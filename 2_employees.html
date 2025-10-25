@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Summary</title>
+    <link rel="stylesheet" href="css/2_employees_style.css">
+</head>
+<body>
+    <div class="app-container">
+    <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <!-- OmPathy Logo -->
+                <img src="images/logo.png" alt="OmPathy Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="1_main_hub.html">OmPathy Hub</a></li>
+                <li class="nav-item active"><a href="2_employees.html"><i class="fas fa-users"></i> Employees</a></li>
+                <li class="nav-item dropdown"><a href="3_feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="3_feedback_details.html"> Feedback Details</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="4_employee_sos.html"><i class="fas fa-exclamation-circle"></i> SOS Request</a></li>
+                <li class="nav-item"><a href="5_action.html"><i class="fas fa-tasks"></i> Action Plan</a></li>
+                <li class="nav-item dropdown"><a href="6_report_custominsight.html"><i class="fas fa-chart-bar"></i> Report</a>
+                    <ul class="submenu">
+                        <li class="nav-subitem"><a href="6_report_custominsight.html"> Custom Insight</a></li>
+                        <li class="nav-subitem"><a href="6_report_templates.html"> Report Templates</a></li>
+                        <li class="nav-subitem"><a href="6_report_schedule.html"> Scheduled Report</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown"><a href="7_query_custom.html"><i class="fas fa-database"></i> Query Studio</a>
+                     <ul class="submenu">
+                        <li class="nav-subitem"><a href="7_query_custom.html"> Custom Builder</a></li>
+                        <li class="nav-subitem"><a href="7_query_template.html"> Template Library</a></li>
+                        <li class="nav-subitem"><a href="7_query_frequency.html"> Frequency Control</a></li>
+                        <li class="nav-subitem"><a href="7_query_ai_rules.html"> AI Response Rules</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="8_copilot.html"><i class="fas fa-robot"></i> HR Copilot</a></li>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+        <!-- Top Navigation -->
+        <header class="header">
+                <div class="header-left">
+                    <h1>Employee Summary</h1>
+                </div>
+                <div class="header-right">
+                    <div class="notifications">
+                        <div class="notification-container">
+                            <span class="notification-badge">2</span>
+                            <span class="notification-icon">🔔</span>
+                        </div>
+                        <div class="notification-container">
+                            <span class="notification-badge">2</span>
+                            <span class="notification-icon">🔔</span>
+                        </div>
+                        <div class="user-avatar"></div>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-d">D</button>
+                        <button class="btn-weekly active">WEEKLY</button>
+                        <button class="btn-m">M</button>
+                        <button class="settings-btn">⚙️</button>
+                    </div>
+                    <div class="filters">
+                        <button class="filter-btn">ALL</button>
+                        <select class="department-select">
+                            <option>Select Department</option>
+                            <option>Product Management</option>
+                            <option>Marketing</option>
+                            <option>Sales Ops</option>
+                            <option>Customer Support</option>
+                        </select>
+                        <select class="employee-select">
+                            <option>Employee Name</option>
+                        </select>
+                        <input type="text" placeholder="Date Range" class="date-range">
+                    </div>
+                </div>
+            </header>
+
+            
+            <div class="content-wrapper">
+            <!-- Left Content Area -->
+            <div class="left-content">
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn">Sentiment Score</button>
+                    <button class="tab-btn active">Burnout Risk Score</button>
+                    <button class="tab-btn">Response Rate</button>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <h3>Employee Burnout Risk Score by Department</h3>
+                    <div class="chart-with-all-content">
+                        <!-- Chart Area -->
+                        <div class="chart-area">
+                            <div class="chart-container">
+                                <div class="chart-bar" style="height: 80%;" data-dept="Marketing"></div>
+                                <div class="chart-bar" style="height: 45%;" data-dept="Finance"></div>
+                                <div class="chart-bar" style="height: 60%;" data-dept="Data Science"></div>
+                                <div class="chart-bar" style="height: 75%;" data-dept="Customer Service"></div>
+                                <div class="chart-bar" style="height: 55%;" data-dept="Dev Team"></div>
+                                <div class="chart-bar" style="height: 40%;" data-dept="Sales Ops"></div>
+                                <div class="chart-bar" style="height: 70%;" data-dept="R&D"></div>
+                                <div class="chart-bar" style="height: 65%;" data-dept="Operations"></div>
+                            </div>
+                            <div class="chart-labels">
+                                <span>Marketing</span>
+                                <span>Finance</span>
+                                <span>Data Science</span>
+                                <span>Customer Service</span>
+                                <span>Dev Team</span>
+                                <span>Sales Ops</span>
+                                <span>R&D</span>
+                                <span>Operations</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Side Content -->
+                        <div class="right-side-content">
+                            <!-- Status Cards and Progress Bar -->
+                            <div class="status-and-progress">
+                                <div class="status-cards-in-blue">
+                                    <div class="status-card satisfied">
+                                        <div class="status-icon">
+                                            <i class="fas fa-smile"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <span class="status-label">Satisfied</span>
+                                            <span class="status-number">78</span>
+                                        </div>
+                                    </div>
+                                    <div class="status-card stable">
+                                        <div class="status-icon">
+                                            <i class="fas fa-meh"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <span class="status-label">Stable</span>
+                                            <span class="status-number">152</span>
+                                        </div>
+                                    </div>
+                                    <div class="status-card nurture">
+                                        <div class="status-icon">
+                                            <i class="fas fa-seedling"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <span class="status-label">Nurture</span>
+                                            <span class="status-number">36</span>
+                                        </div>
+                                    </div>
+                                    <div class="status-card action-required">
+                                        <div class="status-icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="status-info">
+                                            <span class="status-label">Action Required</span>
+                                            <span class="status-number">14</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Progress Bar -->
+                                <div class="progress-section">
+                                    <div class="progress-bar">
+                                        <div class="progress-segment satisfied" style="width: 27.9%;">
+                                            <span class="progress-label">27.9%</span>
+                                        </div>
+                                        <div class="progress-segment stable" style="width: 54.3%;">
+                                            <span class="progress-label">54.3%</span>
+                                        </div>
+                                        <div class="progress-segment nurture" style="width: 12.9%;">
+                                            <span class="progress-label">12.9%</span>
+                                        </div>
+                                        <div class="progress-segment action-required" style="width: 5%;">
+                                            <span class="progress-label">5%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Employee Needs Attention -->
+                            <div class="attention-section-in-blue">
+                                <h3>Employee Needs Attention</h3>
+                                <div class="attention-list">
+                                    <div class="attention-item">
+                                        <div class="employee-info">
+                                            <div class="employee-avatar">
+                                                <img src="https://via.placeholder.com/40x40/8B5CF6/FFFFFF?text=MH" alt="Mason Harris">
+                                            </div>
+                                            <div class="employee-details">
+                                                <span class="employee-name">Mason Harris</span>
+                                                <span class="employee-dept">Finance</span>
+                                            </div>
+                                        </div>
+                                        <div class="action-plan">Action Plan</div>
+                                    </div>
+                                    <div class="attention-item">
+                                        <div class="employee-info">
+                                            <div class="employee-avatar">
+                                                <img src="https://via.placeholder.com/40x40/8B5CF6/FFFFFF?text=OM" alt="Olivia Mitchell">
+                                            </div>
+                                            <div class="employee-details">
+                                                <span class="employee-name">Olivia Mitchell</span>
+                                                <span class="employee-dept">Sales</span>
+                                            </div>
+                                        </div>
+                                        <div class="action-plan">Action Plan</div>
+                                    </div>
+                                    <div class="attention-item">
+                                        <div class="employee-info">
+                                            <div class="employee-avatar">
+                                                <img src="https://via.placeholder.com/40x40/8B5CF6/FFFFFF?text=ST" alt="Sophia Taylor">
+                                            </div>
+                                            <div class="employee-details">
+                                                <span class="employee-name">Sophia Taylor</span>
+                                                <span class="employee-dept">Sales</span>
+                                            </div>
+                                        </div>
+                                        <div class="action-plan">Action Plan</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+                <!-- Total Feedback -->
+                <div class="feedback-section">
+                    <h3>Total Feedback In Queue</h3>
+                    <div class="feedback-total">150</div>
+                    <div class="feedback-breakdown">
+                        <div class="feedback-item low">
+                            <span class="feedback-label">Low</span>
+                            <span class="feedback-count">45</span>
+                        </div>
+                        <div class="feedback-item medium">
+                            <span class="feedback-label">Medium</span>
+                            <span class="feedback-count">67</span>
+                        </div>
+                        <div class="feedback-item high">
+                            <span class="feedback-label">High</span>
+                            <span class="feedback-count">38</span>
+                        </div>
+                    </div>
+                    <div class="priority-note">*Priority Level</div>
+                </div>
+
+                <!-- SOS Requests -->
+                <div class="sos-section">
+                    <h3>Total SOS Request In Queue</h3>
+                    <div class="sos-total">32</div>
+                    <div class="sos-breakdown">
+                        <div class="sos-item resolved">
+                            <span class="sos-label">Resolved</span>
+                            <span class="sos-count">2</span>
+                        </div>
+                        <div class="sos-item investigating">
+                            <span class="sos-label">Investigating</span>
+                            <span class="sos-count">105</span>
+                        </div>
+                        <div class="sos-item unopened">
+                            <span class="sos-label">Unopened</span>
+                            <span class="sos-count">7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Employee Table -->
+        <div class="employee-table-section">
+            <div class="table-controls">
+                <div class="sort-filter">
+                    <span>Sort by</span>
+                    <select>
+                        <option>Default</option>
+                    </select>
+                    <span>Filter by</span>
+                    <select>
+                        <option>All</option>
+                    </select>
+                </div>
+            </div>
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Title</th>
+                        <th>Year of Service</th>
+                        <th>Sentiment Score</th>
+                        <th>BR Score(7-day) 🔍</th>
+                        <th>Response Rate(%)</th>
+                        <th>Risk Level</th>
+                    </tr>
+                </thead>
+                <tbody id="employeeTableBody">
+                    <!-- Employee rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Action Required Modal -->
+        <div id="actionRequiredModal" class="action-modal">
+            <div class="action-modal-content">
+                <div class="action-modal-header">
+                    <h3 id="actionModalEmployeeName">Mason Harris</h3>
+                    <span class="action-required-badge">Action Required</span>
+                </div>
+                
+                <div class="action-modal-body">
+                    <div class="triggered-indicators">
+                        <h4>Triggered Indicators</h4>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Negative Sentiment:</span>
+                            <span class="indicator-value" id="actionModalSentiment">40% over past 7 days</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">SOS Requests:</span>
+                            <span class="indicator-value" id="actionModalSOS">1 in last 7 days</span>
+                        </div>
+                    </div>
+                    
+                    <div class="recommended-actions">
+                        <h4><span class="aes-icon">🔷</span> Recommended Action Plans</h4>
+                        <div class="action-plan-text">
+                            <span class="action-text">Schedule 1:1 Counseling – Expected improvement:</span>
+                            <span class="improvement-percentage">+15%</span>
+                        </div>
+                        <div class="action-plan-text">
+                            <span class="action-text">Organize Team Building Activity – Expected improvement:</span>
+                            <span class="improvement-percentage">+10%</span>
+                        </div>
+                        <div class="action-plan-text">
+                            <span class="action-text">Conduct Workload Review – Expected improvement:</span>
+                            <span class="improvement-percentage">+12%</span>
+                        </div>
+                        
+                        <p class="action-note">This action plan is based on current negative sentiment trends. Please take necessary steps promptly.</p>
+                    </div>
+                </div>
+                
+                <div class="action-modal-footer">
+                    <button class="action-btn view-details-btn">View Details</button>
+                    <button class="action-btn assign-action-btn">Assign Action</button>
+                    <button class="action-btn mark-reviewed-btn">Mark as Reviewed</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Satisfied Modal -->
+        <div id="satisfiedModal" class="risk-modal">
+            <div class="risk-modal-content">
+                <div class="risk-modal-header">
+                    <h3 id="satisfiedModalEmployeeName">Employee Name</h3>
+                    <span class="satisfied-badge">Satisfied</span>
+                </div>
+                
+                <div class="risk-modal-body">
+                    <div class="performance-indicators">
+                        <h4>Performance Indicators</h4>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Sentiment Score:</span>
+                            <span class="indicator-value" id="satisfiedModalSentiment">89</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Response Rate:</span>
+                            <span class="indicator-value" id="satisfiedModalResponse">92.3%</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Burnout Risk:</span>
+                            <span class="indicator-value" id="satisfiedModalBurnout">Low</span>
+                        </div>
+                    </div>
+                    
+                    <div class="maintenance-actions">
+                        <h4><span class="aes-icon">🔷</span> Recommended Action Plans</h4>
+                        <div class="action-plan-text">
+                            <span class="action-text">Continue current engagement level – Maintain performance:</span>
+                            <span class="improvement-percentage">+5%</span>
+                        </div>
+                        <div class="action-plan-text">
+                            <span class="action-text">Quarterly check-in scheduled – Expected stability:</span>
+                            <span class="improvement-percentage">+3%</span>
+                        </div>
+                        
+                        <p class="action-note">Employee is performing well. Continue current support strategies.</p>
+                    </div>
+                </div>
+                
+                <div class="risk-modal-footer">
+                    <button class="action-btn view-details-btn">View Details</button>
+                    <button class="action-btn schedule-checkin-btn">Schedule Check-in</button>
+                    <button class="action-btn close-modal-btn">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nurture Modal -->
+        <div id="nurtureModal" class="risk-modal">
+            <div class="risk-modal-content">
+                <div class="risk-modal-header">
+                    <h3 id="nurtureModalEmployeeName">Employee Name</h3>
+                    <span class="nurture-badge">Nurture</span>
+                </div>
+                
+                <div class="risk-modal-body">
+                    <div class="growth-indicators">
+                        <h4>Growth Indicators</h4>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Sentiment Score:</span>
+                            <span class="indicator-value" id="nurtureModalSentiment">52</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Development Potential:</span>
+                            <span class="indicator-value" id="nurtureModalPotential">High</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Support Needed:</span>
+                            <span class="indicator-value" id="nurtureModalSupport">Moderate</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nurture-actions">
+                        <h4><span class="aes-icon">🔷</span> Recommended Action Plans</h4>
+                        <div class="action-plan-text">
+                            <span class="action-text">Provide mentorship program – Expected improvement:</span>
+                            <span class="improvement-percentage">+20%</span>
+                        </div>
+                        <div class="action-plan-text">
+                            <span class="action-text">Skill development training – Expected improvement:</span>
+                            <span class="improvement-percentage">+15%</span>
+                        </div>
+                        <div class="action-plan-text">
+                            <span class="action-text">Regular feedback sessions – Expected improvement:</span>
+                            <span class="improvement-percentage">+10%</span>
+                        </div>
+                        
+                        <p class="action-note">Employee shows potential for growth. Focused development support recommended.</p>
+                    </div>
+                </div>
+                
+                <div class="risk-modal-footer">
+                    <button class="action-btn view-details-btn">View Details</button>
+                    <button class="action-btn assign-mentor-btn">Assign Mentor</button>
+                    <button class="action-btn create-plan-btn">Create Development Plan</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stable Modal -->
+        <div id="stableModal" class="risk-modal">
+            <div class="risk-modal-content">
+                <div class="risk-modal-header">
+                    <h3 id="stableModalEmployeeName">Employee Name</h3>
+                    <span class="stable-badge">Stable</span>
+                </div>
+                
+                <div class="risk-modal-body">
+                    <div class="stability-indicators">
+                        <h4>Stability Indicators</h4>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Sentiment Score:</span>
+                            <span class="indicator-value" id="stableModalSentiment">70</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Performance Consistency:</span>
+                            <span class="indicator-value" id="stableModalConsistency">Good</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span class="indicator-label">Risk Level:</span>
+                            <span class="indicator-value" id="stableModalRisk">Low</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stability-actions">
+                        <h4><span class="aes-icon">🔷</span> Recommended Action Plans</h4>
+                        <div class="action-plan-text">
+                            <span class="action-text">Monthly performance review – Maintain stability:</span>
+                            <span class="improvement-percentage">+5%</span>
+                        </div>
+                        <div class="action-plan-text">
+                            <span class="action-text">Team collaboration activities – Expected improvement:</span>
+                            <span class="improvement-percentage">+8%</span>
+                        </div>
+                        
+                        <p class="action-note">Employee maintains stable performance. Regular monitoring recommended.</p>
+                    </div>
+                </div>
+                
+                <div class="risk-modal-footer">
+                    <button class="action-btn view-details-btn">View Details</button>
+                    <button class="action-btn monitor-btn">Set Monitoring</button>
+                    <button class="action-btn close-modal-btn">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        </div> <!-- Close content-wrapper -->
+    </main>
+</div>
+
+    <script src="js/2_employees_script.js"></script>
+    <script>
+        // Toggle dropdown menus
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            // Close other open dropdowns (optional)
+            document.querySelectorAll('.nav-item.dropdown').forEach(i => {
+              if (i !== item) i.classList.remove('open');
+            });
+            item.classList.add('open');
+          });
+
+          item.addEventListener('mouseleave', () => {
+            item.classList.remove('open');
+          });
+        });
+
+    </script>
+</body>
+</html>
