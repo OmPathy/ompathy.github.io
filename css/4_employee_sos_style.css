@@ -197,28 +197,31 @@ body {
 .notification-icons {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
 }
 
 .notification-icon {
     position: relative;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    color: #666;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111111;
 }
 
-.notification-icon:hover {
-    background-color: #f0f0f0;
+.notification-icon svg {
+    width: 24px;
+    height: 24px;
 }
+
 
 .notification-badge {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: -4px;
+    right: -4px;
     background-color: #ff4757;
-    color: white;
+    color: #ffffff;
     border-radius: 50%;
     width: 18px;
     height: 18px;
@@ -229,11 +232,19 @@ body {
     font-weight: 600;
 }
 
-.user-avatar img {
+.user-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid #e0e0e0;
+    overflow: hidden;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Controls Styles */
