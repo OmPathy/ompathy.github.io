@@ -173,6 +173,55 @@ body {
     color: #1f2937;
 }
 
+.chat-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.chat-header .notification-icon {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px;
+    font-size: 0;
+    cursor: pointer;
+}
+
+.chat-header .notification-icon:first-child {
+    background-image: url('../images/icon-siren.svg');
+}
+
+.chat-header .notification-icon:nth-child(2) {
+    background-image: url('../images/icon-bell.svg');
+}
+
+.chat-header .notification-icon::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    background-color: #ff4757;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+
+.chat-header .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-image: url('../images/hruser.png');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 /* Purple Button Styles */
 .btn-purple {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
