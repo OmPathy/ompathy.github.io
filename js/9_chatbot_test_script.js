@@ -1,18 +1,24 @@
-// Global variables
+// =======================
+// Global variables & Coze Config
+// =======================
+
 let currentChat = null;
-const API_BASE_URL = 'YOUR_API_ENDPOINT_HERE'; // Legacy demo endpoint, not used now
 
 // Coze API Config
 const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU';
 const COZE_JENNIE_BOT_ID = '7558009309167599633';
 const COZE_JACK_BOT_ID = '7539058866902810641';
-const COZE_API_URL = 'https://api.coze.com/v1/';
+const COZE_API_URL = 'https://api.coze.com/v1/chat';
 
 // Notification states for each chat
 let notificationStates = {
-    jennie: true,  // true = on (🔔), false = off (🔕)
+    jennie: true,
     jack: true
 };
+
+// =======================
+// Chat UI Core
+// =======================
 
 // Chat selection functionality
 function selectChat(chatType) {
@@ -32,46 +38,14 @@ function goBack() {
 
 // Toggle notification state
 function toggleNotification(chatType) {
-    // Toggle the state
     notificationStates[chatType] = !notificationStates[chatType];
-    
-    // Get the button element
     const button = document.getElementById(`${chatType}-notification-btn`);
-    
-    // Update the button icon based on the new state
     if (notificationStates[chatType]) {
-        button.textContent = '🔔';  // Notification on
-        console.log(`${chatType} notifications turned ON`);
+        button.textContent = '🔔';
     } else {
-        button.textContent = '🔕';  // Notification off
-        console.log(`${chatType} notifications turned OFF`);
+        button.textContent = '🔕';
     }
-    
-    // Optional: Save to localStorage for persistence
     localStorage.setItem('notificationStates', JSON.stringify(notificationStates));
-}
-
-// Send message functionality
-function sendMessage(chatType) {
-    const inputId = `${chatType}-input`;
-    const messagesId = `${chatType}-messages`;
-    const input = document.getElementById(inputId);
-    const messagesContainer = document.getElementById(messagesId);
-    
-    const messageText = input.value.trim();
-    if (!messageText) return;
-    
-    // Add user message to chat
-    addMessage(messagesContainer, messageText, 'user');
-    
-    // Clear input
-    input.value = '';
-    
-    // Show typing indicator (optional)
-    showTypingIndicator(messagesContainer, chatType);
-    
-    // Send to API and get response
-    sendToAPI(messageText, chatType, messagesContainer);
 }
 
 // Add message to chat
@@ -139,84 +113,89 @@ function removeTypingIndicator(container) {
     }
 }
 
-// Coze API call helper
+// =======================
+// Coze API 연동
+// =======================
+
 async function callCozeAPI(message, chatType, userId = 'demo-user') {
     const botId = chatType === 'jack' ? COZE_JACK_BOT_ID : COZE_JENNIE_BOT_ID;
 
     const payload = {
         bot_id: botId,
         user_id: userId,
-        query: message
-        // 필요하다면 여기 stream 옵션이나 기타 옵션 추가
+        query: message,
+        stream: false
     };
 
     const res = await fetch(COZE_API_URL, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${COZE_API_KEY}`
+            'Authorization': `Bearer ${COZE_API_KEY}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
     });
 
     if (!res.ok) {
-        console.error('Coze API error status:', res.status);
         const text = await res.text().catch(() => '');
+        console.error('Coze API error status:', res.status);
         console.error('Coze API error body:', text);
         throw new Error(`Coze API request failed: ${res.status}`);
     }
 
     const data = await res.json();
+    console.log('Coze API raw response:', data);
 
-    // TODO: 여기 부분은 실제 Coze 응답 구조에 맞게 수정 필요
-    // 아래는 안전한 기본 파싱 패턴
+    // 응답 파싱 (Coze 구조에 따라 조정 필요)
+    // 아래는 대표적인 패턴들을 방어적으로 처리한 예시
     let reply = '';
 
-    // 예시 형태 1: data.answer
+    // 1) data.answer 형태
     if (typeof data.answer === 'string') {
         reply = data.answer;
     }
-    // 예시 형태 2: data.data[0].content 또는 messages 배열 등
-    else if (Array.isArray(data.data) && data.data.length > 0) {
-        const first = data.data[0];
-        if (typeof first.content === 'string') {
-            reply = first.content;
-        } else if (Array.isArray(first.content) && first.content.length > 0) {
-            const textItem = first.content.find(c => c.type === 'text' && c.text);
-            if (textItem) {
-                reply = textItem.text;
-            }
-        }
-    }
-    // 예시 형태 3: messages 배열에서 assistant 역할 찾기
+    // 2) data.messages 배열에 assistant 역할 메시지
     else if (Array.isArray(data.messages)) {
-        const assistantMsg = data.messages.find(m => m.role === 'assistant' && typeof m.content === 'string');
+        const assistantMsg = [...data.messages].reverse().find(m => m.role === 'assistant' && typeof m.content === 'string');
         if (assistantMsg) {
             reply = assistantMsg.content;
         }
     }
+    // 3) data.data[0].content 또는 content 배열
+    else if (Array.isArray(data.data) && data.data.length > 0) {
+        const first = data.data[0];
+        if (typeof first.content === 'string') {
+            reply = first.content;
+        } else if (Array.isArray(first.content)) {
+            const textItem = first.content.find(c => c.type === 'text' && typeof c.text === 'string');
+            if (textItem) reply = textItem.text;
+        }
+    }
 
     if (!reply) {
-        reply = 'Sorry, I could not understand the response from the server.';
-        console.warn('Coze API response format not fully handled:', data);
+        reply = '죄송합니다. 서버 응답을 해석하지 못했습니다.';
+        console.warn('Coze response format not fully handled:', data);
     }
 
     return reply;
 }
 
-// Send message to API
+// Coze를 사용하는 API Response 함수
+async function getAPIResponse(message, chatType, uploadData = null) {
+    // 현재는 텍스트만 Coze에 보냄
+    const userId = 'demo-user'; // 나중에 실제 로그인 유저 키로 교체 가능
+    const reply = await callCozeAPI(message, chatType, userId);
+    return reply;
+}
+
+// Send message to API (Jennie / Jack 공통)
 async function sendToAPI(message, chatType, messagesContainer, uploadData = null) {
     try {
-        // Show typing indicator
         const typingIndicator = showTypingIndicator(messagesContainer, chatType);
         
-        // 실제 Coze API 호출
         const response = await getAPIResponse(message, chatType, uploadData);
         
-        // Remove typing indicator
         removeTypingIndicator(messagesContainer);
-        
-        // Add bot response
         addMessage(messagesContainer, response, chatType);
         
     } catch (error) {
@@ -226,15 +205,73 @@ async function sendToAPI(message, chatType, messagesContainer, uploadData = null
     }
 }
 
-// Get API response (Coze 연동 버전)
-async function getAPIResponse(message, chatType, uploadData = null) {
-    // 현재는 텍스트만 Coze에 전달
-    const userId = 'demo-user'; // 나중에 로그인 사용자 기준으로 바꿀 수 있음
-    const reply = await callCozeAPI(message, chatType, userId);
-    return reply;
+// =======================
+// Send Message (텍스트 + 업로드 포함 버전)
+// =======================
+
+// 기존 sendMessage가 아래쪽에서 재정의되므로, 여기서는 마지막 정의만 사용됨
+function sendMessage(chatType) {
+    const input = document.getElementById(`${chatType}-input`);
+    const message = input.value.trim();
+    const pendingUpload = window.pendingUploads && window.pendingUploads[chatType];
+    
+    if (!message && !pendingUpload) {
+        return;
+    }
+    
+    const messagesContainer = document.getElementById(`${chatType}-messages`);
+    
+    if (pendingUpload) {
+        addMessageWithUpload(messagesContainer, message, 'user', pendingUpload);
+        removeExistingPreview(chatType);
+    } else if (message) {
+        addMessage(messagesContainer, message, 'user');
+    }
+    
+    input.value = '';
+    
+    if (message || pendingUpload) {
+        // 현재는 uploadData는 Coze로 안 보내고, 텍스트만 보냄
+        sendToAPI(message, chatType, messagesContainer, pendingUpload);
+    }
 }
 
-// Generate report functionality (for Jack/HR)
+function addMessageWithUpload(container, text, sender, uploadData) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    
+    let uploadHtml = '';
+    if (uploadData.type === 'image') {
+        uploadHtml = `
+            <div class="message-upload">
+                <img src="${uploadData.data}" alt="${uploadData.name}"
+                     style="max-width: 200px; max-height: 150px; border-radius: 8px; margin-bottom: 8px;">
+            </div>`;
+    } else if (uploadData.type === 'file') {
+        const fileIcon = getFileIcon(uploadData.mimeType);
+        uploadHtml = `
+            <div class="message-upload">
+                <span style="margin-right: 8px;">${fileIcon}</span>
+                <span>${uploadData.name}</span>
+            </div>`;
+    }
+    
+    messageDiv.innerHTML = `
+        <div class="avatar">${getAvatarSvg(sender)}</div>
+        <div class="message-content">
+            ${uploadHtml}
+            ${text ? `<div class="message-text">${text}</div>` : ''}
+        </div>
+    `;
+    
+    container.appendChild(messageDiv);
+    container.scrollTop = container.scrollHeight;
+}
+
+// =======================
+// Generate Report (Jack 전용, 아직은 데모 텍스트 그대로 사용)
+// =======================
+
 function generateReport() {
     if (currentChat === 'jack') {
         const messagesContainer = document.getElementById('jack-messages');
@@ -258,7 +295,10 @@ Generated on: ${new Date().toLocaleDateString()}
     }
 }
 
-// Handle Enter key press in input fields and initialize notification states
+// =======================
+// DOMContentLoaded 초기화
+// =======================
+
 document.addEventListener('DOMContentLoaded', function() {
     const inputs = document.querySelectorAll('.chat-input input');
     inputs.forEach(input => {
@@ -270,14 +310,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Initialize notification states from localStorage
     initializeNotificationStates();
-    
-    // Initialize settings when page loads
     loadSettings();
 });
 
-// Initialize notification states from localStorage
+// =======================
+// Notification State Init
+// =======================
+
 function initializeNotificationStates() {
     const savedStates = localStorage.getItem('notificationStates');
     if (savedStates) {
@@ -288,7 +328,6 @@ function initializeNotificationStates() {
         }
     }
     
-    // Update button icons based on current states
     Object.keys(notificationStates).forEach(chatType => {
         const button = document.getElementById(`${chatType}-notification-btn`);
         if (button) {
@@ -297,7 +336,10 @@ function initializeNotificationStates() {
     });
 }
 
+// =======================
 // Settings Modal Functions
+// =======================
+
 function openSettings() {
     const modal = document.getElementById('settings-modal');
     if (modal) {
@@ -313,7 +355,6 @@ function closeSettings() {
     }
 }
 
-// Close modal when clicking outside
 document.addEventListener('click', function(event) {
     const modal = document.getElementById('settings-modal');
     if (event.target === modal) {
@@ -321,7 +362,6 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// Close modal with Escape key
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeSettings();
@@ -341,13 +381,11 @@ const defaultSettings = {
     analytics: true
 };
 
-// Load settings from localStorage
 function loadSettings() {
     try {
         const savedSettings = localStorage.getItem('chatbotSettings');
         const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
         
-        // Apply settings to form elements
         document.getElementById('response-speed').value = settings.responseSpeed;
         document.getElementById('message-length').value = settings.messageLength;
         document.getElementById('conversation-tone').value = settings.conversationTone;
@@ -358,29 +396,16 @@ function loadSettings() {
         document.getElementById('save-conversations').checked = settings.saveConversations;
         document.getElementById('analytics').checked = settings.analytics;
         
-        // Apply theme and font size immediately
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
-        
     } catch (error) {
         console.error('Error loading settings:', error);
-        // 오류 시 기본값 적용
         const settings = defaultSettings;
-        document.getElementById('response-speed').value = settings.responseSpeed;
-        document.getElementById('message-length').value = settings.messageLength;
-        document.getElementById('conversation-tone').value = settings.conversationTone;
-        document.getElementById('theme-mode').value = settings.themeMode;
-        document.getElementById('font-size').value = settings.fontSize;
-        document.getElementById('typing-indicator').checked = settings.typingIndicator;
-        document.getElementById('sound-effects').checked = settings.soundEffects;
-        document.getElementById('save-conversations').checked = settings.saveConversations;
-        document.getElementById('analytics').checked = settings.analytics;
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
     }
 }
 
-// Save settings to localStorage
 function saveSettings() {
     try {
         const settings = {
@@ -397,14 +422,11 @@ function saveSettings() {
         
         localStorage.setItem('chatbotSettings', JSON.stringify(settings));
         
-        // Apply settings immediately
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
         
-        // Show success feedback
         showSettingsSaved();
         
-        // Close modal after saving
         setTimeout(() => {
             closeSettings();
         }, 1000);
@@ -415,7 +437,6 @@ function saveSettings() {
     }
 }
 
-// Reset settings to default
 function resetSettings() {
     if (confirm('Are you sure you want to reset all settings to default?')) {
         localStorage.removeItem('chatbotSettings');
@@ -423,24 +444,19 @@ function resetSettings() {
     }
 }
 
-// Clear chat history
 function clearChatHistory() {
     if (confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
-        // Clear all chat containers
         const jennieMessages = document.querySelector('#jennie-chat .chat-messages');
         const jackMessages = document.querySelector('#jack-chat .chat-messages');
         
         if (jennieMessages) jennieMessages.innerHTML = '';
         if (jackMessages) jackMessages.innerHTML = '';
         
-        // Clear any stored conversation data
         localStorage.removeItem('chatHistory');
-        
         alert('Chat history has been cleared.');
     }
 }
 
-// Apply theme
 function applyTheme(theme) {
     const body = document.body;
     body.classList.remove('light-theme', 'dark-theme');
@@ -450,20 +466,17 @@ function applyTheme(theme) {
     } else if (theme === 'light') {
         body.classList.add('light-theme');
     } else if (theme === 'auto') {
-        // Use system preference
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
     }
 }
 
-// Apply font size
 function applyFontSize(size) {
     const body = document.body;
     body.classList.remove('font-small', 'font-medium', 'font-large');
     body.classList.add(`font-${size}`);
 }
 
-// Show settings saved feedback
 function showSettingsSaved() {
     const saveBtn = document.querySelector('.primary-btn');
     const originalText = saveBtn.textContent;
@@ -476,52 +489,10 @@ function showSettingsSaved() {
     }, 1000);
 }
 
-// API Integration Helper Functions (legacy, not required for Coze but 남겨둠)
-/**
- * Initialize API connection
- * @param {string} apiKey - Your API key
- * @param {string} baseUrl - Your API base URL
- */
-function initializeAPI(apiKey, baseUrl) {
-    // Set up API configuration
-    window.API_CONFIG = {
-        key: apiKey,
-        baseUrl: baseUrl,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-        }
-    };
-}
+// =======================
+// File Upload (프론트 UI만, Coze 연동은 추후)
+// =======================
 
-/**
- * Send message to your chatbot API (legacy helper)
- */
-async function callChatbotAPI(message, chatType, userId = 'demo-user') {
-    if (!window.API_CONFIG) {
-        throw new Error('API not initialized. Call initializeAPI() first.');
-    }
-    
-    const response = await fetch(`${window.API_CONFIG.baseUrl}/chat`, {
-        method: 'POST',
-        headers: window.API_CONFIG.headers,
-        body: JSON.stringify({
-            message: message,
-            bot_type: chatType,
-            user_id: userId,
-            timestamp: new Date().toISOString()
-        })
-    });
-    
-    if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return data.response || data.message || 'Sorry, I did not understand that.';
-}
-
-// File Upload Functions
 function triggerImageUpload(chatType) {
     const imageInput = document.getElementById(`${chatType}-image-upload`);
     imageInput.click();
@@ -536,26 +507,20 @@ function handleImageUpload(chatType, input) {
     const file = input.files[0];
     if (!file) return;
     
-    // Validate file type
     if (!file.type.startsWith('image/')) {
         alert('Please select a valid image file');
         return;
     }
-    
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
         alert('Image file size cannot exceed 5MB');
         return;
     }
     
-    // Create preview
     const reader = new FileReader();
     reader.onload = function(e) {
         showImagePreview(chatType, e.target.result, file.name);
     };
     reader.readAsDataURL(file);
-    
-    // Clear the input
     input.value = '';
 }
 
@@ -563,26 +528,19 @@ function handleFileUpload(chatType, input) {
     const file = input.files[0];
     if (!file) return;
     
-    // Validate file size (max 10MB)
     if (file.size > 10 * 1024 * 1024) {
         alert('File size cannot exceed 10MB');
         return;
     }
     
-    // Show file preview
     showFilePreview(chatType, file);
-    
-    // Clear the input
     input.value = '';
 }
 
 function showImagePreview(chatType, imageSrc, fileName) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
-    
-    // Remove existing preview
     removeExistingPreview(chatType);
     
-    // Create simple attachment indicator
     const previewDiv = document.createElement('div');
     previewDiv.className = 'attachment-indicator';
     previewDiv.innerHTML = `
@@ -596,11 +554,9 @@ function showImagePreview(chatType, imageSrc, fileName) {
         <button class="remove-attachment" onclick="removeImagePreview('${chatType}')" title="Remove attachment">×</button>
     `;
     
-    // Insert before input container
     const inputContainer = chatInput.querySelector('.input-container');
     chatInput.insertBefore(previewDiv, inputContainer);
     
-    // Store image data for sending
     window.pendingUploads = window.pendingUploads || {};
     window.pendingUploads[chatType] = {
         type: 'image',
@@ -611,11 +567,8 @@ function showImagePreview(chatType, imageSrc, fileName) {
 
 function showFilePreview(chatType, file) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
-    
-    // Remove existing preview
     removeExistingPreview(chatType);
     
-    // Create simple attachment indicator
     const previewDiv = document.createElement('div');
     previewDiv.className = 'attachment-indicator';
     previewDiv.innerHTML = `
@@ -628,11 +581,9 @@ function showFilePreview(chatType, file) {
         <button class="remove-attachment" onclick="removeFilePreview('${chatType}')" title="Remove attachment">×</button>
     `;
     
-    // Insert before input container
     const inputContainer = chatInput.querySelector('.input-container');
     chatInput.insertBefore(previewDiv, inputContainer);
     
-    // Store file data for sending
     const reader = new FileReader();
     reader.onload = function(e) {
         window.pendingUploads = window.pendingUploads || {};
@@ -653,7 +604,6 @@ function removeExistingPreview(chatType) {
         existingPreview.remove();
     }
     
-    // Clear pending upload
     if (window.pendingUploads && window.pendingUploads[chatType]) {
         delete window.pendingUploads[chatType];
     }
@@ -679,71 +629,16 @@ function getFileIcon(mimeType) {
     return 'FILE';
 }
 
-// Modify sendMessage function to handle uploads
-const originalSendMessage = sendMessage;
-function sendMessage(chatType) {
-    const input = document.getElementById(`${chatType}-input`);
-    const message = input.value.trim();
-    const pendingUpload = window.pendingUploads && window.pendingUploads[chatType];
-    
-    // Check if there is a message or upload
-    if (!message && !pendingUpload) {
-        return;
-    }
-    
-    const messagesContainer = document.getElementById(`${chatType}-messages`);
-    
-    // Add user message with upload if present
-    if (pendingUpload) {
-        addMessageWithUpload(messagesContainer, message, 'user', pendingUpload);
-        // Clear the upload
-        removeExistingPreview(chatType);
-    } else if (message) {
-        addMessage(messagesContainer, message, 'user');
-    }
-    
-    // Clear input
-    input.value = '';
-    
-    // Send to API (현재는 uploadData는 Coze에 전달하지 않고 무시)
-    if (message || pendingUpload) {
-        sendToAPI(message, chatType, messagesContainer, pendingUpload);
-    }
-}
+// =======================
+// Export to window
+// =======================
 
-function addMessageWithUpload(container, text, sender, uploadData) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    
-    let uploadHtml = '';
-    if (uploadData.type === 'image') {
-        uploadHtml = `<div class="message-upload"><img src="${uploadData.data}" alt="${uploadData.name}" style="max-width: 200px; max-height: 150px; border-radius: 8px; margin-bottom: 8px;"></div>`;
-    } else if (uploadData.type === 'file') {
-        const fileIcon = getFileIcon(uploadData.mimeType);
-        uploadHtml = `<div class="message-upload"><span style="margin-right: 8px;">${fileIcon}</span><span>${uploadData.name}</span></div>`;
-    }
-    
-    messageDiv.innerHTML = `
-        <div class="avatar">${getAvatarSvg(sender)}</div>
-        <div class="message-content">
-            ${uploadHtml}
-            ${text ? `<div class="message-text">${text}</div>` : ''}
-        </div>
-    `;
-    
-    container.appendChild(messageDiv);
-    container.scrollTop = container.scrollHeight;
-}
-
-// Export functions for external use
 window.ChatbotUI = {
     selectChat,
     goBack,
     sendMessage,
     toggleNotification,
     generateReport,
-    initializeAPI,
-    callChatbotAPI,
     openSettings,
     closeSettings,
     saveSettings,
@@ -756,3 +651,4 @@ window.ChatbotUI = {
     removeImagePreview,
     removeFilePreview
 };
+
