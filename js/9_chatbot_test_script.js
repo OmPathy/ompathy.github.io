@@ -1,6 +1,12 @@
 // Global variables
 let currentChat = null;
-const API_BASE_URL = 'YOUR_API_ENDPOINT_HERE'; // Replace with your actual API endpoint
+const API_BASE_URL = 'YOUR_API_ENDPOINT_HERE'; // Legacy demo endpoint, not used now
+
+// Coze API Config
+const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU';
+const COZE_JENNIE_BOT_ID = '7558009309167599633';
+const COZE_JACK_BOT_ID = '7539058866902810641';
+const COZE_API_URL = 'https://api.coze.com/v1/';
 
 // Notification states for each chat
 let notificationStates = {
@@ -40,11 +46,6 @@ function toggleNotification(chatType) {
         button.textContent = '🔕';  // Notification off
         console.log(`${chatType} notifications turned OFF`);
     }
-    
-    // You can add additional logic here, such as:
-    // - Saving the state to localStorage
-    // - Sending the preference to your backend
-    // - Showing a toast notification to the user
     
     // Optional: Save to localStorage for persistence
     localStorage.setItem('notificationStates', JSON.stringify(notificationStates));
@@ -138,21 +139,82 @@ function removeTypingIndicator(container) {
     }
 }
 
+// Coze API call helper
+async function callCozeAPI(message, chatType, userId = 'demo-user') {
+    const botId = chatType === 'jack' ? COZE_JACK_BOT_ID : COZE_JENNIE_BOT_ID;
+
+    const payload = {
+        bot_id: botId,
+        user_id: userId,
+        query: message
+        // 필요하다면 여기 stream 옵션이나 기타 옵션 추가
+    };
+
+    const res = await fetch(COZE_API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${COZE_API_KEY}`
+        },
+        body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+        console.error('Coze API error status:', res.status);
+        const text = await res.text().catch(() => '');
+        console.error('Coze API error body:', text);
+        throw new Error(`Coze API request failed: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    // TODO: 여기 부분은 실제 Coze 응답 구조에 맞게 수정 필요
+    // 아래는 안전한 기본 파싱 패턴
+    let reply = '';
+
+    // 예시 형태 1: data.answer
+    if (typeof data.answer === 'string') {
+        reply = data.answer;
+    }
+    // 예시 형태 2: data.data[0].content 또는 messages 배열 등
+    else if (Array.isArray(data.data) && data.data.length > 0) {
+        const first = data.data[0];
+        if (typeof first.content === 'string') {
+            reply = first.content;
+        } else if (Array.isArray(first.content) && first.content.length > 0) {
+            const textItem = first.content.find(c => c.type === 'text' && c.text);
+            if (textItem) {
+                reply = textItem.text;
+            }
+        }
+    }
+    // 예시 형태 3: messages 배열에서 assistant 역할 찾기
+    else if (Array.isArray(data.messages)) {
+        const assistantMsg = data.messages.find(m => m.role === 'assistant' && typeof m.content === 'string');
+        if (assistantMsg) {
+            reply = assistantMsg.content;
+        }
+    }
+
+    if (!reply) {
+        reply = 'Sorry, I could not understand the response from the server.';
+        console.warn('Coze API response format not fully handled:', data);
+    }
+
+    return reply;
+}
+
 // Send message to API
 async function sendToAPI(message, chatType, messagesContainer, uploadData = null) {
     try {
         // Show typing indicator
         const typingIndicator = showTypingIndicator(messagesContainer, chatType);
         
-        // Simulate API delay for demo purposes
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // 실제 Coze API 호출
+        const response = await getAPIResponse(message, chatType, uploadData);
         
         // Remove typing indicator
         removeTypingIndicator(messagesContainer);
-        
-        // For demo purposes, we'll use predefined responses
-        // Replace this with actual API call that includes upload data
-        const response = await getAPIResponse(message, chatType, uploadData);
         
         // Add bot response
         addMessage(messagesContainer, response, chatType);
@@ -164,97 +226,12 @@ async function sendToAPI(message, chatType, messagesContainer, uploadData = null
     }
 }
 
-// Get API response (replace with actual API integration)
+// Get API response (Coze 연동 버전)
 async function getAPIResponse(message, chatType, uploadData = null) {
-    // This is a demo function - replace with your actual API call
-    
-    /* 
-    Example of actual API integration with file upload:
-    
-    const formData = new FormData();
-    formData.append('message', message);
-    formData.append('chatType', chatType);
-    formData.append('userId', 'demo-user');
-    
-    if (uploadData) {
-        if (uploadData.type === 'image') {
-            // Convert base64 to blob for image upload
-            const response = await fetch(uploadData.data);
-            const blob = await response.blob();
-            formData.append('image', blob, uploadData.name);
-        } else if (uploadData.type === 'file') {
-            // Convert base64 to blob for file upload
-            const response = await fetch(uploadData.data);
-            const blob = await response.blob();
-            formData.append('file', blob, uploadData.name);
-        }
-    }
-    
-    const response = await fetch(`${API_BASE_URL}/chat`, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer YOUR_API_KEY'
-        },
-        body: formData
-    });
-    
-    const data = await response.json();
-    return data.response;
-    */
-    
-    // Demo responses with upload handling
-    if (uploadData) {
-        if (uploadData.type === 'image') {
-            const imageResponses = {
-                jennie: [
-                    "I can see the image you've shared. This looks helpful for understanding your situation better. How can I assist you with this?",
-                    "Thanks for sharing this image! I can help you analyze or discuss what you've shown me.",
-                    "I've received your image. Let me know how I can help you with this visual information."
-                ],
-                jack: [
-                    "I've received the image you uploaded. This visual data can be valuable for our analysis. Would you like me to include this in a report?",
-                    "Thanks for the visual input. I can incorporate this image data into our team insights and analytics.",
-                    "Image received and processed. This additional context will help with our HR analytics."
-                ]
-            };
-            const responses = imageResponses[chatType] || imageResponses.jennie;
-            return responses[Math.floor(Math.random() * responses.length)];
-        } else if (uploadData.type === 'file') {
-            const fileResponses = {
-                jennie: [
-                    `I've received your file "${uploadData.name}". I'll review this document and help you with any questions or tasks related to it.`,
-                    `Thanks for uploading "${uploadData.name}". I can help you process or analyze this file content.`,
-                    `File "${uploadData.name}" has been received. How would you like me to assist you with this document?`
-                ],
-                jack: [
-                    `I've processed the file "${uploadData.name}". This document can be included in our HR analytics and reporting.`,
-                    `File "${uploadData.name}" has been analyzed. I can incorporate this data into team insights and performance metrics.`,
-                    `Document "${uploadData.name}" received and processed for HR analysis. Would you like me to generate insights from this data?`
-                ]
-            };
-            const responses = fileResponses[chatType] || fileResponses.jennie;
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
-    }
-    
-    // Regular demo responses for text messages
-    const demoResponses = {
-        jennie: [
-            "I understand your concern. Let me help you prioritize your tasks and find ways to manage the workload more effectively.",
-            "That sounds challenging. Have you considered breaking down the project into smaller, more manageable milestones?",
-            "I'm here to support you. Let's work together to create a plan that makes this more manageable.",
-            "Thanks for sharing that with me. I'll make sure to pass along your feedback to help improve our processes."
-        ],
-        jack: [
-            "Based on the current data, I can see some trends in employee sentiment. Would you like me to generate a detailed report?",
-            "I've analyzed the recent feedback and can provide insights on team morale and engagement levels.",
-            "The sentiment analysis shows some areas that might need attention. Let me compile a comprehensive overview for you.",
-            "I can help you track employee satisfaction metrics and identify potential areas for improvement."
-        ]
-    };
-    
-    const responses = demoResponses[chatType] || demoResponses.jennie;
-    return responses[Math.floor(Math.random() * responses.length)];
+    // 현재는 텍스트만 Coze에 전달
+    const userId = 'demo-user'; // 나중에 로그인 사용자 기준으로 바꿀 수 있음
+    const reply = await callCozeAPI(message, chatType, userId);
+    return reply;
 }
 
 // Generate report functionality (for Jack/HR)
@@ -387,7 +364,19 @@ function loadSettings() {
         
     } catch (error) {
         console.error('Error loading settings:', error);
-        loadSettings(); // Load defaults if error
+        // 오류 시 기본값 적용
+        const settings = defaultSettings;
+        document.getElementById('response-speed').value = settings.responseSpeed;
+        document.getElementById('message-length').value = settings.messageLength;
+        document.getElementById('conversation-tone').value = settings.conversationTone;
+        document.getElementById('theme-mode').value = settings.themeMode;
+        document.getElementById('font-size').value = settings.fontSize;
+        document.getElementById('typing-indicator').checked = settings.typingIndicator;
+        document.getElementById('sound-effects').checked = settings.soundEffects;
+        document.getElementById('save-conversations').checked = settings.saveConversations;
+        document.getElementById('analytics').checked = settings.analytics;
+        applyTheme(settings.themeMode);
+        applyFontSize(settings.fontSize);
     }
 }
 
@@ -487,9 +476,7 @@ function showSettingsSaved() {
     }, 1000);
 }
 
-// API Integration Helper Functions
-// You can use these functions to integrate with your actual chatbot API
-
+// API Integration Helper Functions (legacy, not required for Coze but 남겨둠)
 /**
  * Initialize API connection
  * @param {string} apiKey - Your API key
@@ -508,11 +495,7 @@ function initializeAPI(apiKey, baseUrl) {
 }
 
 /**
- * Send message to your chatbot API
- * @param {string} message - User message
- * @param {string} chatType - 'jennie' or 'jack'
- * @param {string} userId - User identifier
- * @returns {Promise<string>} - Bot response
+ * Send message to your chatbot API (legacy helper)
  */
 async function callChatbotAPI(message, chatType, userId = 'demo-user') {
     if (!window.API_CONFIG) {
@@ -535,7 +518,7 @@ async function callChatbotAPI(message, chatType, userId = 'demo-user') {
     }
     
     const data = await response.json();
-    return data.response || data.message || 'Sorry, I didn\'t understand that.';
+    return data.response || data.message || 'Sorry, I did not understand that.';
 }
 
 // File Upload Functions
@@ -703,7 +686,7 @@ function sendMessage(chatType) {
     const message = input.value.trim();
     const pendingUpload = window.pendingUploads && window.pendingUploads[chatType];
     
-    // Check if there's a message or upload
+    // Check if there is a message or upload
     if (!message && !pendingUpload) {
         return;
     }
@@ -722,7 +705,7 @@ function sendMessage(chatType) {
     // Clear input
     input.value = '';
     
-    // Send to API (you can modify this to include upload data)
+    // Send to API (현재는 uploadData는 Coze에 전달하지 않고 무시)
     if (message || pendingUpload) {
         sendToAPI(message, chatType, messagesContainer, pendingUpload);
     }
