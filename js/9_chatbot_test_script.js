@@ -5,9 +5,9 @@
 let currentChat = null;
 
 // Coze API Config
-const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU';          // ← 여기 네 키 넣기
+const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU'; // 실제 키로 교체
 const COZE_JENNIE_BOT_ID = '7558009309167599633';
-const COZE_JACK_BOT_ID   = '7539058866902810641';
+const COZE_JACK_BOT_ID = '7539058866902810641';
 const COZE_API_URL = 'https://api.coze.com/open_api/v2/chat';
 
 // Notification states for each chat
@@ -48,13 +48,13 @@ function toggleNotification(chatType) {
 function addMessage(container, text, sender, isTyping = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender === 'user' ? 'user-message' : `${currentChat}-message`}`;
-
+    
     if (isTyping) {
         messageDiv.classList.add('typing-indicator');
     }
-
+    
     const avatarSvg = getAvatarSvg(sender);
-
+    
     messageDiv.innerHTML = `
         <div class="avatar ${sender === 'user' ? 'user-avatar' : `${currentChat}-avatar`}">
             ${avatarSvg}
@@ -63,10 +63,10 @@ function addMessage(container, text, sender, isTyping = false) {
             ${isTyping ? 'Typing...' : text}
         </div>
     `;
-
+    
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
-
+    
     return messageDiv;
 }
 
@@ -103,7 +103,9 @@ function showTypingIndicator(container, chatType) {
 // Remove typing indicator
 function removeTypingIndicator(container) {
     const typingIndicator = container.querySelector('.typing-indicator');
-    if (typingIndicator) typingIndicator.remove();
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
 }
 
 // =======================
@@ -130,73 +132,53 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         body: JSON.stringify(payload)
     });
 
-    if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        console.error('Coze API error status:', res.status);
-        console.error('Coze API error body:', text);
-        throw new Error(`Coze API request failed: ${res.status}`);
+    const data = await res.json().catch(() => null);
+    console.log('Coze raw:', data);
+
+    if (!data) {
+        throw new Error('Invalid JSON response from Coze');
     }
 
-    const data = await res.json();
-    console.log('Coze API raw response:', data);
-
-    if (typeof data.code !== 'undefined' && data.code !== 0) {
-        console.error('Coze business error:', data);
+    if (typeof data.code === 'number' && data.code !== 0) {
+        console.error('Coze error:', data.msg, data.detail);
         throw new Error(`Coze error: ${data.msg || 'unknown error'}`);
     }
 
-    // -------------------------
-    // 응답 구조에서 assistant 텍스트만 싹 모으기
-    // -------------------------
-    // 1) messages 배열 가져오기 (여러 패턴 방어적으로 처리)
-    let messages = [];
+    // 우선순위 1: data.data.messages 배열 안의 assistant 메시지
+    const messages = (data.data && Array.isArray(data.data.messages))
+        ? data.data.messages
+        : (Array.isArray(data.messages) ? data.messages : []);
 
-    if (data.data && Array.isArray(data.data.messages)) {
-        messages = data.data.messages;
-    } else if (Array.isArray(data.messages)) {
-        messages = data.messages;
-    } else if (Array.isArray(data.data)) {
-        messages = data.data;
-    }
-
-    // 2) assistant role + text content만 추출
-    const assistantTexts = (messages || [])
-        .filter(m => m.role === 'assistant')
-        .map(m => {
-            if (typeof m.content === 'string') {
-                return m.content;
-            }
-            // content가 배열인 경우(text 블록들)
-            if (Array.isArray(m.content)) {
-                return m.content
-                    .filter(c => c.type === 'text' && typeof c.text === 'string')
-                    .map(c => c.text)
-                    .join('\n');
-            }
-            return '';
-        })
+    const assistantTexts = messages
+        .filter(m => m.role === 'assistant' && typeof m.content === 'string')
+        .map(m => m.content)
         .join('\n')
         .trim();
 
-    if (!assistantTexts) {
-        console.warn('Coze response format not fully handled:', data);
-        return '죄송합니다. 서버 응답을 해석하지 못했습니다.';
+    if (assistantTexts) {
+        return assistantTexts;
     }
 
-    return assistantTexts;
+    // 우선순위 2: data.answer 문자열
+    if (typeof data.answer === 'string' && data.answer.trim()) {
+        return data.answer.trim();
+    }
+
+    console.warn('Coze response format not fully handled:', data);
+    return 'Sorry, I could not process the server response.';
 }
 
 // Coze를 사용하는 API Response 함수
 async function getAPIResponse(message, chatType, uploadData = null) {
-    const userId = 'demo-user'; // 나중에 실제 유저 ID로 교체
+    const userId = 'demo-user'; // 나중에 실제 로그인 유저 키로 교체 가능
     const reply = await callCozeAPI(message, chatType, userId);
     return reply;
 }
 
 // Send message to API (Jennie / Jack 공통)
 async function sendToAPI(message, chatType, messagesContainer, uploadData = null) {
-    const typingIndicator = showTypingIndicator(messagesContainer, chatType);
     try {
+        showTypingIndicator(messagesContainer, chatType);
         const response = await getAPIResponse(message, chatType, uploadData);
         removeTypingIndicator(messagesContainer);
         addMessage(messagesContainer, response, chatType);
@@ -208,29 +190,31 @@ async function sendToAPI(message, chatType, messagesContainer, uploadData = null
 }
 
 // =======================
-// Send Message (텍스트 + 업로드 포함)
+// Send Message (텍스트 + 업로드 포함 버전)
 // =======================
 
 function sendMessage(chatType) {
     const input = document.getElementById(`${chatType}-input`);
     const message = input.value.trim();
     const pendingUpload = window.pendingUploads && window.pendingUploads[chatType];
-
-    if (!message && !pendingUpload) return;
-
+    
+    if (!message && !pendingUpload) {
+        return;
+    }
+    
     const messagesContainer = document.getElementById(`${chatType}-messages`);
-
+    
     if (pendingUpload) {
         addMessageWithUpload(messagesContainer, message, 'user', pendingUpload);
         removeExistingPreview(chatType);
     } else if (message) {
         addMessage(messagesContainer, message, 'user');
     }
-
+    
     input.value = '';
-
+    
     if (message || pendingUpload) {
-        // 지금은 텍스트만 Coze로 보냄 (upload는 UI용)
+        // 현재는 uploadData는 Coze로 안 보내고, 텍스트만 보냄
         sendToAPI(message, chatType, messagesContainer, pendingUpload);
     }
 }
@@ -238,7 +222,7 @@ function sendMessage(chatType) {
 function addMessageWithUpload(container, text, sender, uploadData) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
-
+    
     let uploadHtml = '';
     if (uploadData.type === 'image') {
         uploadHtml = `
@@ -254,7 +238,7 @@ function addMessageWithUpload(container, text, sender, uploadData) {
                 <span>${uploadData.name}</span>
             </div>`;
     }
-
+    
     messageDiv.innerHTML = `
         <div class="avatar">${getAvatarSvg(sender)}</div>
         <div class="message-content">
@@ -262,13 +246,13 @@ function addMessageWithUpload(container, text, sender, uploadData) {
             ${text ? `<div class="message-text">${text}</div>` : ''}
         </div>
     `;
-
+    
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
 }
 
 // =======================
-// Generate Report (Jack 데모용)
+// Generate Report (Jack 전용, 아직은 데모 텍스트 그대로 사용)
 // =======================
 
 function generateReport() {
@@ -279,7 +263,7 @@ function generateReport() {
 
 Current Status:
 • Positive: 60%
-• Neutral: 25%
+• Neutral: 25% 
 • Negative: 15%
 
 Key Insights:
@@ -289,6 +273,7 @@ Key Insights:
 
 Generated on: ${new Date().toLocaleDateString()}
         `;
+        
         addMessage(messagesContainer, reportText.trim(), 'jack');
     }
 }
@@ -307,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
+    
     initializeNotificationStates();
     loadSettings();
 });
@@ -325,7 +310,7 @@ function initializeNotificationStates() {
             console.log('Error parsing saved notification states, using defaults');
         }
     }
-
+    
     Object.keys(notificationStates).forEach(chatType => {
         const button = document.getElementById(`${chatType}-notification-btn`);
         if (button) {
@@ -348,7 +333,9 @@ function openSettings() {
 
 function closeSettings() {
     const modal = document.getElementById('settings-modal');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
 document.addEventListener('click', function(event) {
@@ -359,7 +346,9 @@ document.addEventListener('click', function(event) {
 });
 
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') closeSettings();
+    if (event.key === 'Escape') {
+        closeSettings();
+    }
 });
 
 // Default settings
@@ -379,7 +368,7 @@ function loadSettings() {
     try {
         const savedSettings = localStorage.getItem('chatbotSettings');
         const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
-
+        
         document.getElementById('response-speed').value = settings.responseSpeed;
         document.getElementById('message-length').value = settings.messageLength;
         document.getElementById('conversation-tone').value = settings.conversationTone;
@@ -389,13 +378,14 @@ function loadSettings() {
         document.getElementById('sound-effects').checked = settings.soundEffects;
         document.getElementById('save-conversations').checked = settings.saveConversations;
         document.getElementById('analytics').checked = settings.analytics;
-
+        
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
     } catch (error) {
         console.error('Error loading settings:', error);
-        applyTheme(defaultSettings.themeMode);
-        applyFontSize(defaultSettings.fontSize);
+        const settings = defaultSettings;
+        applyTheme(settings.themeMode);
+        applyFontSize(settings.fontSize);
     }
 }
 
@@ -412,17 +402,18 @@ function saveSettings() {
             saveConversations: document.getElementById('save-conversations').checked,
             analytics: document.getElementById('analytics').checked
         };
-
+        
         localStorage.setItem('chatbotSettings', JSON.stringify(settings));
-
+        
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
-
+        
         showSettingsSaved();
-
+        
         setTimeout(() => {
             closeSettings();
         }, 1000);
+        
     } catch (error) {
         console.error('Error saving settings:', error);
         alert('Error saving settings. Please try again.');
@@ -440,10 +431,10 @@ function clearChatHistory() {
     if (confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
         const jennieMessages = document.querySelector('#jennie-chat .chat-messages');
         const jackMessages = document.querySelector('#jack-chat .chat-messages');
-
+        
         if (jennieMessages) jennieMessages.innerHTML = '';
         if (jackMessages) jackMessages.innerHTML = '';
-
+        
         localStorage.removeItem('chatHistory');
         alert('Chat history has been cleared.');
     }
@@ -452,7 +443,7 @@ function clearChatHistory() {
 function applyTheme(theme) {
     const body = document.body;
     body.classList.remove('light-theme', 'dark-theme');
-
+    
     if (theme === 'dark') {
         body.classList.add('dark-theme');
     } else if (theme === 'light') {
@@ -474,7 +465,7 @@ function showSettingsSaved() {
     const originalText = saveBtn.textContent;
     saveBtn.textContent = 'Saved!';
     saveBtn.style.background = '#10B981';
-
+    
     setTimeout(() => {
         saveBtn.textContent = originalText;
         saveBtn.style.background = '#8B5CF6';
@@ -482,7 +473,7 @@ function showSettingsSaved() {
 }
 
 // =======================
-// File Upload (프론트 UI만)
+// File Upload (프론트 UI만, Coze 연동은 추후)
 // =======================
 
 function triggerImageUpload(chatType) {
@@ -498,7 +489,7 @@ function triggerFileUpload(chatType) {
 function handleImageUpload(chatType, input) {
     const file = input.files[0];
     if (!file) return;
-
+    
     if (!file.type.startsWith('image/')) {
         alert('Please select a valid image file');
         return;
@@ -507,7 +498,7 @@ function handleImageUpload(chatType, input) {
         alert('Image file size cannot exceed 5MB');
         return;
     }
-
+    
     const reader = new FileReader();
     reader.onload = function(e) {
         showImagePreview(chatType, e.target.result, file.name);
@@ -519,12 +510,12 @@ function handleImageUpload(chatType, input) {
 function handleFileUpload(chatType, input) {
     const file = input.files[0];
     if (!file) return;
-
+    
     if (file.size > 10 * 1024 * 1024) {
         alert('File size cannot exceed 10MB');
         return;
     }
-
+    
     showFilePreview(chatType, file);
     input.value = '';
 }
@@ -532,7 +523,7 @@ function handleFileUpload(chatType, input) {
 function showImagePreview(chatType, imageSrc, fileName) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
     removeExistingPreview(chatType);
-
+    
     const previewDiv = document.createElement('div');
     previewDiv.className = 'attachment-indicator';
     previewDiv.innerHTML = `
@@ -545,10 +536,10 @@ function showImagePreview(chatType, imageSrc, fileName) {
         </div>
         <button class="remove-attachment" onclick="removeImagePreview('${chatType}')" title="Remove attachment">×</button>
     `;
-
+    
     const inputContainer = chatInput.querySelector('.input-container');
     chatInput.insertBefore(previewDiv, inputContainer);
-
+    
     window.pendingUploads = window.pendingUploads || {};
     window.pendingUploads[chatType] = {
         type: 'image',
@@ -560,7 +551,7 @@ function showImagePreview(chatType, imageSrc, fileName) {
 function showFilePreview(chatType, file) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
     removeExistingPreview(chatType);
-
+    
     const previewDiv = document.createElement('div');
     previewDiv.className = 'attachment-indicator';
     previewDiv.innerHTML = `
@@ -572,10 +563,10 @@ function showFilePreview(chatType, file) {
         </div>
         <button class="remove-attachment" onclick="removeFilePreview('${chatType}')" title="Remove attachment">×</button>
     `;
-
+    
     const inputContainer = chatInput.querySelector('.input-container');
     chatInput.insertBefore(previewDiv, inputContainer);
-
+    
     const reader = new FileReader();
     reader.onload = function(e) {
         window.pendingUploads = window.pendingUploads || {};
@@ -592,8 +583,10 @@ function showFilePreview(chatType, file) {
 function removeExistingPreview(chatType) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
     const existingPreview = chatInput.querySelector('.image-preview, .file-preview, .attachment-indicator');
-    if (existingPreview) existingPreview.remove();
-
+    if (existingPreview) {
+        existingPreview.remove();
+    }
+    
     if (window.pendingUploads && window.pendingUploads[chatType]) {
         delete window.pendingUploads[chatType];
     }
