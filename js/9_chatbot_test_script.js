@@ -5,7 +5,7 @@
 let currentChat = null;
 
 // Coze API Config
-const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU';
+const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU'; // 실제 키로 교체
 const COZE_JENNIE_BOT_ID = '7558009309167599633';
 const COZE_JACK_BOT_ID = '7539058866902810641';
 const COZE_API_URL = 'https://api.coze.com/open_api/v2/chat';
@@ -40,11 +40,7 @@ function goBack() {
 function toggleNotification(chatType) {
     notificationStates[chatType] = !notificationStates[chatType];
     const button = document.getElementById(`${chatType}-notification-btn`);
-    if (notificationStates[chatType]) {
-        button.textContent = '🔔';
-    } else {
-        button.textContent = '🔕';
-    }
+    button.textContent = notificationStates[chatType] ? '🔔' : '🔕';
     localStorage.setItem('notificationStates', JSON.stringify(notificationStates));
 }
 
@@ -101,8 +97,7 @@ function getAvatarSvg(sender) {
 
 // Show typing indicator
 function showTypingIndicator(container, chatType) {
-    const typingMessage = addMessage(container, '', chatType, true);
-    return typingMessage;
+    return addMessage(container, '', chatType, true);
 }
 
 // Remove typing indicator
@@ -131,58 +126,50 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${COZE_API_KEY}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
         },
         body: JSON.stringify(payload)
     });
 
-    if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        console.error('Coze API error status:', res.status);
-        console.error('Coze API error body:', text);
-        throw new Error(`Coze API request failed: ${res.status}`);
+    const data = await res.json().catch(() => null);
+    console.log('Coze raw:', data);
+
+    if (!data) {
+        throw new Error('Invalid JSON response from Coze');
     }
 
-    const data = await res.json();
-    console.log('Coze API raw response:', data);
-
-    // 응답 파싱 (Coze 구조에 따라 조정 필요)
-    // 아래는 대표적인 패턴들을 방어적으로 처리한 예시
-    let reply = '';
-
-    // 1) data.answer 형태
-    if (typeof data.answer === 'string') {
-        reply = data.answer;
-    }
-    // 2) data.messages 배열에 assistant 역할 메시지
-    else if (Array.isArray(data.messages)) {
-        const assistantMsg = [...data.messages].reverse().find(m => m.role === 'assistant' && typeof m.content === 'string');
-        if (assistantMsg) {
-            reply = assistantMsg.content;
-        }
-    }
-    // 3) data.data[0].content 또는 content 배열
-    else if (Array.isArray(data.data) && data.data.length > 0) {
-        const first = data.data[0];
-        if (typeof first.content === 'string') {
-            reply = first.content;
-        } else if (Array.isArray(first.content)) {
-            const textItem = first.content.find(c => c.type === 'text' && typeof c.text === 'string');
-            if (textItem) reply = textItem.text;
-        }
+    if (typeof data.code === 'number' && data.code !== 0) {
+        console.error('Coze error:', data.msg, data.detail);
+        throw new Error(`Coze error: ${data.msg || 'unknown error'}`);
     }
 
-    if (!reply) {
-        reply = '죄송합니다. 서버 응답을 해석하지 못했습니다.';
-        console.warn('Coze response format not fully handled:', data);
+    // 우선순위 1: data.data.messages 배열 안의 assistant 메시지
+    const messages = (data.data && Array.isArray(data.data.messages))
+        ? data.data.messages
+        : (Array.isArray(data.messages) ? data.messages : []);
+
+    const assistantTexts = messages
+        .filter(m => m.role === 'assistant' && typeof m.content === 'string')
+        .map(m => m.content)
+        .join('\n')
+        .trim();
+
+    if (assistantTexts) {
+        return assistantTexts;
     }
 
-    return reply;
+    // 우선순위 2: data.answer 문자열
+    if (typeof data.answer === 'string' && data.answer.trim()) {
+        return data.answer.trim();
+    }
+
+    console.warn('Coze response format not fully handled:', data);
+    return 'Sorry, I could not process the server response.';
 }
 
 // Coze를 사용하는 API Response 함수
 async function getAPIResponse(message, chatType, uploadData = null) {
-    // 현재는 텍스트만 Coze에 보냄
     const userId = 'demo-user'; // 나중에 실제 로그인 유저 키로 교체 가능
     const reply = await callCozeAPI(message, chatType, userId);
     return reply;
@@ -191,13 +178,10 @@ async function getAPIResponse(message, chatType, uploadData = null) {
 // Send message to API (Jennie / Jack 공통)
 async function sendToAPI(message, chatType, messagesContainer, uploadData = null) {
     try {
-        const typingIndicator = showTypingIndicator(messagesContainer, chatType);
-        
+        showTypingIndicator(messagesContainer, chatType);
         const response = await getAPIResponse(message, chatType, uploadData);
-        
         removeTypingIndicator(messagesContainer);
         addMessage(messagesContainer, response, chatType);
-        
     } catch (error) {
         console.error('Error sending message to API:', error);
         removeTypingIndicator(messagesContainer);
@@ -209,7 +193,6 @@ async function sendToAPI(message, chatType, messagesContainer, uploadData = null
 // Send Message (텍스트 + 업로드 포함 버전)
 // =======================
 
-// 기존 sendMessage가 아래쪽에서 재정의되므로, 여기서는 마지막 정의만 사용됨
 function sendMessage(chatType) {
     const input = document.getElementById(`${chatType}-input`);
     const message = input.value.trim();
@@ -651,4 +634,3 @@ window.ChatbotUI = {
     removeImagePreview,
     removeFilePreview
 };
-
