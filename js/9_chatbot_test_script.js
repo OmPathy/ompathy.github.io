@@ -5,7 +5,7 @@
 let currentChat = null;
 
 // Coze API Config
-const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU'; // 실제 키로 교체
+const COZE_API_KEY = 'pat_PnBc5GldcFkUsQAoREIIu3eUd8lUvQuTgphV7ZTa9ZuFHrdWb7HcgxkV5SSItbQU'; 
 const COZE_JENNIE_BOT_ID = '7558009309167599633';
 const COZE_JACK_BOT_ID = '7539058866902810641';
 const COZE_API_URL = 'https://api.coze.com/open_api/v2/chat';
@@ -21,6 +21,18 @@ let conversationIds = {
     jennie: null,
     jack: null
 };
+
+// Load conversation IDs from sessionStorage
+try {
+    if (typeof sessionStorage !== 'undefined') {
+        const savedIds = sessionStorage.getItem('conversationIds');
+        if (savedIds) {
+            conversationIds = JSON.parse(savedIds);
+        }
+    }
+} catch (e) {
+    console.log('Error loading conversation IDs', e);
+}
 
 // =======================
 // Chat UI Core
@@ -66,14 +78,77 @@ function addMessage(container, text, sender, isTyping = false) {
             ${avatarSvg}
         </div>
         <div class="message-content">
-            ${isTyping ? 'Typing...' : text}
+            ${isTyping ? 'Typing...' : parseMarkdown(text)}
         </div>
     `;
 
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
 
+    // Log message to backend (skip typing indicators)
+    if (!isTyping && currentChat) {
+        logMessageToBackend(text, sender, currentChat);
+    }
+
     return messageDiv;
+}
+
+// Log message to backend
+async function logMessageToBackend(message, sender, chatType) {
+    try {
+        await fetch('/api/chat/log', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                conversation_id: conversationIds[chatType] || 'new_conversation',
+                sender: sender,
+                message: message,
+                timestamp: new Date().toISOString()
+            })
+        });
+    } catch (error) {
+        console.error('Error logging message:', error);
+    }
+}
+
+// Simple Markdown Parser
+function parseMarkdown(text) {
+    if (!text) return '';
+
+    // Escape HTML first to prevent XSS (basic)
+    let html = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Bold: **text**
+    html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+    // Newlines to <br>
+    html = html.replace(/\n/g, '<br>');
+
+    return html;
+}
+
+// Clean response to remove repetitive intros
+function cleanResponse(text) {
+    if (!text) return text;
+
+    // Patterns to remove
+    const patterns = [
+        /^Hey there! I'm Jennie\. /i,
+        /^Hi! I'm Jennie - nice to meet you \?\? /i, // The ?? might be emoji artifacts
+        /^Hi! I'm Jennie\. /i
+    ];
+
+    let cleaned = text;
+    for (const pattern of patterns) {
+        cleaned = cleaned.replace(pattern, '');
+    }
+
+    return cleaned;
 }
 
 // Get avatar image based on sender
@@ -156,6 +231,13 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
 
     if (data.conversation_id) {
         conversationIds[chatType] = data.conversation_id;
+        try {
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.setItem('conversationIds', JSON.stringify(conversationIds));
+            }
+        } catch (e) {
+            console.warn('Failed to save conversation IDs to sessionStorage', e);
+        }
     }
 
     // 우선순위 1: data.data.messages 배열 안의 assistant 메시지
@@ -170,12 +252,12 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         .trim();
 
     if (assistantTexts) {
-        return assistantTexts;
+        return cleanResponse(assistantTexts);
     }
 
     // 우선순위 2: data.answer 문자열
     if (typeof data.answer === 'string' && data.answer.trim()) {
-        return data.answer.trim();
+        return cleanResponse(data.answer.trim());
     }
 
     console.warn('Coze response format not fully handled:', data);
@@ -199,7 +281,7 @@ async function sendToAPI(message, chatType, messagesContainer, uploadData = null
     } catch (error) {
         console.error('Error sending message to API:', error);
         removeTypingIndicator(messagesContainer);
-        addMessage(messagesContainer, 'Sorry, I encountered an error. Please try again.', chatType);
+        addMessage(messagesContainer, `Error: ${error.message}. Please try again.`, chatType);
     }
 }
 
@@ -456,6 +538,13 @@ function clearChatHistory() {
             jennie: null,
             jack: null
         };
+        try {
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.removeItem('conversationIds');
+            }
+        } catch (e) {
+            console.warn('Failed to clear sessionStorage', e);
+        }
 
         alert('Chat history has been cleared.');
     }
