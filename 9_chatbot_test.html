@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmPathy: Your AI Teammates</title>
     <link rel="stylesheet" href="css/9_chatbot_test_styles.css">
 </head>
+
 <body>
     <div class="container">
+        <a href="/dashboard" class="dashboard-float-btn">📊 Dashboard</a>
         <!-- Chat Selection Screen -->
         <div id="selection-screen" class="selection-screen">
             <h1>OmPathy: Your AI Teammates</h1>
             <p>Blending empathy with intelligence at work！</p>
+
             <div class="chat-options">
                 <div class="chat-option" onclick="selectChat('jennie')">
                     <div class="avatar jennie-avatar">
@@ -46,7 +50,8 @@
                     </div>
                 </div>
                 <div class="chat-actions">
-                    <button class="action-btn" id="jennie-notification-btn" onclick="toggleNotification('jennie')">🔔</button>
+                    <button class="action-btn" id="jennie-notification-btn"
+                        onclick="toggleNotification('jennie')">🔔</button>
                     <button class="action-btn" onclick="openSettings()">⚙️</button>
                     <button class="action-btn" onclick="goBack()">✕</button>
                 </div>
@@ -58,22 +63,30 @@
                 <div class="input-container">
                     <div class="upload-buttons">
                         <button class="upload-btn" onclick="triggerImageUpload('jennie')" title="Upload Image">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                                </path>
                                 <circle cx="12" cy="13" r="4"></circle>
                             </svg>
                         </button>
                         <button class="upload-btn" onclick="triggerFileUpload('jennie')" title="Upload File">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48">
+                                </path>
                             </svg>
                         </button>
                     </div>
                     <input type="text" placeholder="Type a message..." id="jennie-input">
                     <button class="send-btn" onclick="sendMessage('jennie')">→</button>
                 </div>
-                <input type="file" id="jennie-image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload('jennie', this)">
-                <input type="file" id="jennie-file-upload" style="display: none;" onchange="handleFileUpload('jennie', this)">
+                <input type="file" id="jennie-image-upload" accept="image/*" style="display: none;"
+                    onchange="handleImageUpload('jennie', this)">
+                <input type="file" id="jennie-file-upload" style="display: none;"
+                    onchange="handleFileUpload('jennie', this)">
             </div>
         </div>
 
@@ -91,7 +104,8 @@
                     </div>
                 </div>
                 <div class="chat-actions">
-                    <button class="action-btn" id="jack-notification-btn" onclick="toggleNotification('jack')">🔔</button>
+                    <button class="action-btn" id="jack-notification-btn"
+                        onclick="toggleNotification('jack')">🔔</button>
                     <button class="action-btn" onclick="openSettings()">⚙️</button>
                     <button class="action-btn" onclick="goBack()">✕</button>
                 </div>
@@ -103,24 +117,35 @@
                 <div class="input-container">
                     <div class="upload-buttons">
                         <button class="upload-btn" onclick="triggerImageUpload('jack')" title="Upload Image">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                                </path>
                                 <circle cx="12" cy="13" r="4"></circle>
                             </svg>
                         </button>
                         <button class="upload-btn" onclick="triggerFileUpload('jack')" title="Upload File">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.64 16.2a2 2 0 0 1-2.83-2.83l8.49-8.48">
+                                </path>
                             </svg>
                         </button>
                     </div>
                     <input type="text" placeholder="Type a message..." id="jack-input">
                     <button class="send-btn" onclick="sendMessage('jack')">→</button>
                 </div>
-                <input type="file" id="jack-image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload('jack', this)">
-                <input type="file" id="jack-file-upload" style="display: none;" onchange="handleFileUpload('jack', this)">
+                <input type="file" id="jack-image-upload" accept="image/*" style="display: none;"
+                    onchange="handleImageUpload('jack', this)">
+                <input type="file" id="jack-file-upload" style="display: none;"
+                    onchange="handleFileUpload('jack', this)">
             </div>
         </div>
+    </div>
+
+
     </div>
 
     <!-- Settings Modal -->
@@ -133,7 +158,7 @@
             <div class="modal-body">
                 <div class="setting-group">
                     <h3>Chat Preferences</h3>
-                    
+
                     <div class="setting-item">
                         <label for="response-speed">Response Speed</label>
                         <select id="response-speed">
@@ -165,7 +190,7 @@
 
                 <div class="setting-group">
                     <h3>Interface</h3>
-                    
+
                     <div class="setting-item">
                         <label for="theme-mode">Theme</label>
                         <select id="theme-mode">
@@ -197,7 +222,7 @@
 
                 <div class="setting-group">
                     <h3>Privacy & Data</h3>
-                    
+
                     <div class="setting-item checkbox-item">
                         <input type="checkbox" id="save-conversations" checked>
                         <label for="save-conversations">Save conversation history</label>
@@ -222,4 +247,5 @@
 
     <script src="js/9_chatbot_test_script.js"></script>
 </body>
+
 </html>
