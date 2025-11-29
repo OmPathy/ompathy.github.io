@@ -117,7 +117,7 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
 
     const payload = {
         bot_id: botId,
-        user_id: userId,
+        user: userId,
         query: message,
         stream: false
     };
