@@ -48,13 +48,13 @@ function toggleNotification(chatType) {
 function addMessage(container, text, sender, isTyping = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender === 'user' ? 'user-message' : `${currentChat}-message`}`;
-    
+
     if (isTyping) {
         messageDiv.classList.add('typing-indicator');
     }
-    
+
     const avatarSvg = getAvatarSvg(sender);
-    
+
     messageDiv.innerHTML = `
         <div class="avatar ${sender === 'user' ? 'user-avatar' : `${currentChat}-avatar`}">
             ${avatarSvg}
@@ -63,10 +63,10 @@ function addMessage(container, text, sender, isTyping = false) {
             ${isTyping ? 'Typing...' : text}
         </div>
     `;
-    
+
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
-    
+
     return messageDiv;
 }
 
@@ -150,7 +150,7 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         : (Array.isArray(data.messages) ? data.messages : []);
 
     const assistantTexts = messages
-        .filter(m => m.role === 'assistant' && typeof m.content === 'string')
+        .filter(m => m.role === 'assistant' && m.type === 'answer' && typeof m.content === 'string')
         .map(m => m.content)
         .join('\n')
         .trim();
@@ -197,22 +197,22 @@ function sendMessage(chatType) {
     const input = document.getElementById(`${chatType}-input`);
     const message = input.value.trim();
     const pendingUpload = window.pendingUploads && window.pendingUploads[chatType];
-    
+
     if (!message && !pendingUpload) {
         return;
     }
-    
+
     const messagesContainer = document.getElementById(`${chatType}-messages`);
-    
+
     if (pendingUpload) {
         addMessageWithUpload(messagesContainer, message, 'user', pendingUpload);
         removeExistingPreview(chatType);
     } else if (message) {
         addMessage(messagesContainer, message, 'user');
     }
-    
+
     input.value = '';
-    
+
     if (message || pendingUpload) {
         // 현재는 uploadData는 Coze로 안 보내고, 텍스트만 보냄
         sendToAPI(message, chatType, messagesContainer, pendingUpload);
@@ -222,7 +222,7 @@ function sendMessage(chatType) {
 function addMessageWithUpload(container, text, sender, uploadData) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
-    
+
     let uploadHtml = '';
     if (uploadData.type === 'image') {
         uploadHtml = `
@@ -238,7 +238,7 @@ function addMessageWithUpload(container, text, sender, uploadData) {
                 <span>${uploadData.name}</span>
             </div>`;
     }
-    
+
     messageDiv.innerHTML = `
         <div class="avatar">${getAvatarSvg(sender)}</div>
         <div class="message-content">
@@ -246,7 +246,7 @@ function addMessageWithUpload(container, text, sender, uploadData) {
             ${text ? `<div class="message-text">${text}</div>` : ''}
         </div>
     `;
-    
+
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
 }
@@ -273,7 +273,7 @@ Key Insights:
 
 Generated on: ${new Date().toLocaleDateString()}
         `;
-        
+
         addMessage(messagesContainer, reportText.trim(), 'jack');
     }
 }
@@ -282,17 +282,17 @@ Generated on: ${new Date().toLocaleDateString()}
 // DOMContentLoaded 초기화
 // =======================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const inputs = document.querySelectorAll('.chat-input input');
     inputs.forEach(input => {
-        input.addEventListener('keypress', function(e) {
+        input.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 const chatType = this.id.replace('-input', '');
                 sendMessage(chatType);
             }
         });
     });
-    
+
     initializeNotificationStates();
     loadSettings();
 });
@@ -310,7 +310,7 @@ function initializeNotificationStates() {
             console.log('Error parsing saved notification states, using defaults');
         }
     }
-    
+
     Object.keys(notificationStates).forEach(chatType => {
         const button = document.getElementById(`${chatType}-notification-btn`);
         if (button) {
@@ -338,14 +338,14 @@ function closeSettings() {
     }
 }
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const modal = document.getElementById('settings-modal');
     if (event.target === modal) {
         closeSettings();
     }
 });
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
         closeSettings();
     }
@@ -368,7 +368,7 @@ function loadSettings() {
     try {
         const savedSettings = localStorage.getItem('chatbotSettings');
         const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
-        
+
         document.getElementById('response-speed').value = settings.responseSpeed;
         document.getElementById('message-length').value = settings.messageLength;
         document.getElementById('conversation-tone').value = settings.conversationTone;
@@ -378,7 +378,7 @@ function loadSettings() {
         document.getElementById('sound-effects').checked = settings.soundEffects;
         document.getElementById('save-conversations').checked = settings.saveConversations;
         document.getElementById('analytics').checked = settings.analytics;
-        
+
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
     } catch (error) {
@@ -402,18 +402,18 @@ function saveSettings() {
             saveConversations: document.getElementById('save-conversations').checked,
             analytics: document.getElementById('analytics').checked
         };
-        
+
         localStorage.setItem('chatbotSettings', JSON.stringify(settings));
-        
+
         applyTheme(settings.themeMode);
         applyFontSize(settings.fontSize);
-        
+
         showSettingsSaved();
-        
+
         setTimeout(() => {
             closeSettings();
         }, 1000);
-        
+
     } catch (error) {
         console.error('Error saving settings:', error);
         alert('Error saving settings. Please try again.');
@@ -431,10 +431,10 @@ function clearChatHistory() {
     if (confirm('Are you sure you want to clear all chat history? This action cannot be undone.')) {
         const jennieMessages = document.querySelector('#jennie-chat .chat-messages');
         const jackMessages = document.querySelector('#jack-chat .chat-messages');
-        
+
         if (jennieMessages) jennieMessages.innerHTML = '';
         if (jackMessages) jackMessages.innerHTML = '';
-        
+
         localStorage.removeItem('chatHistory');
         alert('Chat history has been cleared.');
     }
@@ -443,7 +443,7 @@ function clearChatHistory() {
 function applyTheme(theme) {
     const body = document.body;
     body.classList.remove('light-theme', 'dark-theme');
-    
+
     if (theme === 'dark') {
         body.classList.add('dark-theme');
     } else if (theme === 'light') {
@@ -465,7 +465,7 @@ function showSettingsSaved() {
     const originalText = saveBtn.textContent;
     saveBtn.textContent = 'Saved!';
     saveBtn.style.background = '#10B981';
-    
+
     setTimeout(() => {
         saveBtn.textContent = originalText;
         saveBtn.style.background = '#8B5CF6';
@@ -489,7 +489,7 @@ function triggerFileUpload(chatType) {
 function handleImageUpload(chatType, input) {
     const file = input.files[0];
     if (!file) return;
-    
+
     if (!file.type.startsWith('image/')) {
         alert('Please select a valid image file');
         return;
@@ -498,9 +498,9 @@ function handleImageUpload(chatType, input) {
         alert('Image file size cannot exceed 5MB');
         return;
     }
-    
+
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         showImagePreview(chatType, e.target.result, file.name);
     };
     reader.readAsDataURL(file);
@@ -510,12 +510,12 @@ function handleImageUpload(chatType, input) {
 function handleFileUpload(chatType, input) {
     const file = input.files[0];
     if (!file) return;
-    
+
     if (file.size > 10 * 1024 * 1024) {
         alert('File size cannot exceed 10MB');
         return;
     }
-    
+
     showFilePreview(chatType, file);
     input.value = '';
 }
@@ -523,7 +523,7 @@ function handleFileUpload(chatType, input) {
 function showImagePreview(chatType, imageSrc, fileName) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
     removeExistingPreview(chatType);
-    
+
     const previewDiv = document.createElement('div');
     previewDiv.className = 'attachment-indicator';
     previewDiv.innerHTML = `
@@ -536,10 +536,10 @@ function showImagePreview(chatType, imageSrc, fileName) {
         </div>
         <button class="remove-attachment" onclick="removeImagePreview('${chatType}')" title="Remove attachment">×</button>
     `;
-    
+
     const inputContainer = chatInput.querySelector('.input-container');
     chatInput.insertBefore(previewDiv, inputContainer);
-    
+
     window.pendingUploads = window.pendingUploads || {};
     window.pendingUploads[chatType] = {
         type: 'image',
@@ -551,7 +551,7 @@ function showImagePreview(chatType, imageSrc, fileName) {
 function showFilePreview(chatType, file) {
     const chatInput = document.querySelector(`#${chatType}-chat .chat-input`);
     removeExistingPreview(chatType);
-    
+
     const previewDiv = document.createElement('div');
     previewDiv.className = 'attachment-indicator';
     previewDiv.innerHTML = `
@@ -563,12 +563,12 @@ function showFilePreview(chatType, file) {
         </div>
         <button class="remove-attachment" onclick="removeFilePreview('${chatType}')" title="Remove attachment">×</button>
     `;
-    
+
     const inputContainer = chatInput.querySelector('.input-container');
     chatInput.insertBefore(previewDiv, inputContainer);
-    
+
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         window.pendingUploads = window.pendingUploads || {};
         window.pendingUploads[chatType] = {
             type: 'file',
@@ -586,7 +586,7 @@ function removeExistingPreview(chatType) {
     if (existingPreview) {
         existingPreview.remove();
     }
-    
+
     if (window.pendingUploads && window.pendingUploads[chatType]) {
         delete window.pendingUploads[chatType];
     }
