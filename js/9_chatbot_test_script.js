@@ -16,6 +16,12 @@ let notificationStates = {
     jack: true
 };
 
+// Conversation IDs for each chat
+let conversationIds = {
+    jennie: null,
+    jack: null
+};
+
 // =======================
 // Chat UI Core
 // =======================
@@ -122,6 +128,10 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         stream: false
     };
 
+    if (conversationIds[chatType]) {
+        payload.conversation_id = conversationIds[chatType];
+    }
+
     const res = await fetch(COZE_API_URL, {
         method: 'POST',
         headers: {
@@ -142,6 +152,10 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
     if (typeof data.code === 'number' && data.code !== 0) {
         console.error('Coze error:', data.msg, data.detail);
         throw new Error(`Coze error: ${data.msg || 'unknown error'}`);
+    }
+
+    if (data.conversation_id) {
+        conversationIds[chatType] = data.conversation_id;
     }
 
     // 우선순위 1: data.data.messages 배열 안의 assistant 메시지
@@ -436,6 +450,13 @@ function clearChatHistory() {
         if (jackMessages) jackMessages.innerHTML = '';
 
         localStorage.removeItem('chatHistory');
+
+        // Reset conversation IDs
+        conversationIds = {
+            jennie: null,
+            jack: null
+        };
+
         alert('Chat history has been cleared.');
     }
 }
