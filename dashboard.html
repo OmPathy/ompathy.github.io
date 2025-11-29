@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmPathy Dashboard - Sentiment Analysis</title>
+    <link rel="stylesheet" href="css/9_chatbot_test_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .chart-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #4B5563;
+        }
+        .recent-logs {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        th {
+            background-color: #F9FAFB;
+            font-weight: 600;
+        }
+        .sentiment-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        .sentiment-positive { background-color: #D1FAE5; color: #065F46; }
+        .sentiment-neutral { background-color: #F3F4F6; color: #374151; }
+        .sentiment-negative { background-color: #FEE2E2; color: #991B1B; }
+        
+        .back-link {
+            text-decoration: none;
+            color: #6B7280;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .back-link:hover {
+            color: #4B5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <a href="/" class="back-link">← Back to Chat</a>
+                <h1>Sentiment Analysis Dashboard</h1>
+                <p>Real-time analysis of user interactions</p>
+            </div>
+            <button onclick="refreshData()" class="primary-btn">Refresh Data</button>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Overall Sentiment Distribution</h3>
+                <canvas id="sentimentDistributionChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Sentiment Trend Over Time</h3>
+                <canvas id="sentimentTrendChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>User vs. Bot Sentiment</h3>
+                <canvas id="userBotSentimentChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Conversation Volume</h3>
+                <canvas id="volumeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="recent-logs">
+            <h3>Recent Conversations</h3>
+            <div style="overflow-x: auto;">
+                <table id="logsTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Sender</th>
+                            <th>Message</th>
+                            <th>Sentiment</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
