@@ -8,7 +8,7 @@ let currentChat = null;
 const COZE_API_KEY = 'pat_0tU9XIi5jEtVThpkuPSfpJVkFyjRTt7ZPxW7KYAIXuVbn6btUeQUkhtjZHNYb7vT'; // 실제 키로 교체
 const COZE_JENNIE_BOT_ID = '7558009309167599633';
 const COZE_JACK_BOT_ID = '7539058866902810641';
-const COZE_API_URL = 'https://api.coze.com/v3/chat';
+const COZE_API_URL = 'https://api.coze.com/open_api/v2/chat';
 
 // Notification states for each chat
 let notificationStates = {
