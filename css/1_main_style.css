@@ -1359,3 +1359,13 @@ body {
     box-shadow: 0 10px 20px rgba(255, 71, 87, 0.32);
     transform: translateY(-1px);
 }
+
+.positive-highlights-card {
+    background: linear-gradient(180deg, rgba(16, 172, 132, 0.10) 0%, rgba(255, 255, 255, 1) 70%);
+    border-left: 4px solid #10ac84;
+}
+
+.needs-attention-card {
+    background: linear-gradient(180deg, rgba(255, 71, 87, 0.10) 0%, rgba(255, 255, 255, 1) 70%);
+    border-left: 4px solid #ff4757;
+}
