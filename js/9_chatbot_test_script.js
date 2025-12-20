@@ -198,8 +198,14 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
 
     const payload = {
         bot_id: botId,
-        user: userId,
-        query: message,
+        user_id: userId,
+        additional_messages: [
+            {
+                role: 'user',
+                content: message,
+                content_type: 'text'
+            }
+        ],
         stream: false
     };
 
@@ -207,6 +213,7 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         payload.conversation_id = conversationIds[chatType];
     }
 
+    // Step 1: Initiate Chat
     const res = await fetch(COZE_API_URL, {
         method: 'POST',
         headers: {
@@ -218,19 +225,19 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
     });
 
     const data = await res.json().catch(() => null);
-    console.log('Coze raw:', data);
+    console.log('Coze init raw:', data);
 
-    if (!data) {
-        throw new Error('Invalid JSON response from Coze');
+    if (!data || data.code !== 0) {
+        console.error('Coze error:', data?.msg, data?.detail);
+        throw new Error(`Coze error: ${data?.msg || 'unknown error'}`);
     }
 
-    if (typeof data.code === 'number' && data.code !== 0) {
-        console.error('Coze error:', data.msg, data.detail);
-        throw new Error(`Coze error: ${data.msg || 'unknown error'}`);
-    }
+    const chatId = data.data.id;
+    const conversationId = data.data.conversation_id;
 
-    if (data.conversation_id) {
-        conversationIds[chatType] = data.conversation_id;
+    // Update conversation ID if new
+    if (conversationId) {
+        conversationIds[chatType] = conversationId;
         try {
             if (typeof sessionStorage !== 'undefined') {
                 sessionStorage.setItem('conversationIds', JSON.stringify(conversationIds));
@@ -240,11 +247,55 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         }
     }
 
-    // 우선순위 1: data.data.messages 배열 안의 assistant 메시지
-    const messages = (data.data && Array.isArray(data.data.messages))
-        ? data.data.messages
-        : (Array.isArray(data.messages) ? data.messages : []);
+    // Step 2: Poll for completion
+    let status = data.data.status;
+    let pollCount = 0;
+    const maxPolls = 30; // Timeout after ~30 seconds
 
+    while (status === 'in_progress') {
+        if (pollCount >= maxPolls) {
+            throw new Error('Chat processing timed out');
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s
+        pollCount++;
+
+        const pollRes = await fetch(`https://api.coze.com/v3/chat/retrieve?chat_id=${chatId}&conversation_id=${conversationId}`, {
+            headers: {
+                'Authorization': `Bearer ${COZE_API_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const pollData = await pollRes.json();
+        if (pollData.code !== 0) {
+            throw new Error(`Polling error: ${pollData.msg}`);
+        }
+
+        status = pollData.data.status;
+        console.log(`Polling status (${pollCount}):`, status);
+
+        if (status === 'failed' || status === 'canceled') {
+            throw new Error(`Chat processing ${status}: ${pollData.data.last_error?.msg || 'unknown error'}`);
+        }
+    }
+
+    // Step 3: Get Messages
+    const msgRes = await fetch(`https://api.coze.com/v3/chat/message/list?chat_id=${chatId}&conversation_id=${conversationId}`, {
+        headers: {
+            'Authorization': `Bearer ${COZE_API_KEY}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const msgData = await msgRes.json();
+    if (msgData.code !== 0) {
+        throw new Error(`Message retrieval error: ${msgData.msg}`);
+    }
+
+    // Step 4: Extract Answer
+    // Filter for assistant answers that are not tool outputs
+    const messages = msgData.data;
     const assistantTexts = messages
         .filter(m => m.role === 'assistant' && m.type === 'answer' && typeof m.content === 'string')
         .map(m => m.content)
@@ -255,13 +306,7 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
         return cleanResponse(assistantTexts);
     }
 
-    // 우선순위 2: data.answer 문자열
-    if (typeof data.answer === 'string' && data.answer.trim()) {
-        return cleanResponse(data.answer.trim());
-    }
-
-    console.warn('Coze response format not fully handled:', data);
-    return 'Sorry, I could not process the server response.';
+    return 'Sorry, I could not retrieve the response.';
 }
 
 // Coze를 사용하는 API Response 함수
