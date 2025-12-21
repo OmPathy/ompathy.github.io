@@ -3,6 +3,12 @@
 let charts = {};
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if running from file system
+    if (window.location.protocol === 'file:') {
+        alert('Error: You are opening this file directly. You MUST run the Flask server (python app.py) and access it via http://localhost:5000 for the dashboard to work.');
+        return;
+    }
+
     fetchDashboardData();
 
     // Auto-refresh every 30 seconds
@@ -26,7 +32,7 @@ function refreshData() {
 function updateDashboard(data) {
     updateDistributionChart(data.sentiment_counts);
     updateTrendChart(data.sentiment_over_time);
-    updateUserBotChart(data.sentiment_over_time);
+    updateEngagementChart(data.sentiment_over_time); // New chart
     updateVolumeChart(data.sentiment_over_time);
     updateLogsTable(data.recent_logs);
 }
@@ -34,20 +40,16 @@ function updateDashboard(data) {
 function updateDistributionChart(counts) {
     const ctx = document.getElementById('sentimentDistributionChart').getContext('2d');
 
-    // Prepare data
     const labels = Object.keys(counts);
     const values = Object.values(counts);
 
-    // Colors mapping (approximate for common labels)
-    const backgroundColors = labels.map(label => {
-        const l = label.toLowerCase();
-        if (l.includes('very positive')) return '#059669';
-        if (l.includes('positive')) return '#34D399';
-        if (l.includes('neutral')) return '#9CA3AF';
-        if (l.includes('negative')) return '#F87171';
-        if (l.includes('very negative')) return '#DC2626';
-        return '#60A5FA'; // Default blue
-    });
+    const colors = {
+        'Positive': '#10B981', // Emerald 500
+        'Neutral': '#9CA3AF',  // Gray 400
+        'Negative': '#EF4444'  // Red 500
+    };
+
+    const backgroundColors = labels.map(l => colors[l] || '#60A5FA');
 
     if (charts.distribution) {
         charts.distribution.data.labels = labels;
@@ -62,13 +64,16 @@ function updateDistributionChart(counts) {
                 datasets: [{
                     data: values,
                     backgroundColor: backgroundColors,
-                    borderWidth: 1
+                    borderWidth: 0,
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
+                cutout: '70%',
                 plugins: {
-                    legend: { position: 'bottom' }
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+                    title: { display: false }
                 }
             }
         });
@@ -78,22 +83,11 @@ function updateDistributionChart(counts) {
 function updateTrendChart(logs) {
     const ctx = document.getElementById('sentimentTrendChart').getContext('2d');
 
-    // Process logs to get sentiment score over time
-    // Assuming score is 0-1. We might want to map labels to -1 to 1 for better trend line?
-    // For now let's just plot the raw score, maybe color coded by label?
-    // Actually, a line chart of "Average Sentiment Score" per bucket would be good, 
-    // but let's keep it simple: Plot each message's score.
-    // To make it meaningful, let's map labels to a numeric value:
-    // Very Positive: 1, Positive: 0.5, Neutral: 0, Negative: -0.5, Very Negative: -1
-
+    // Map sentiment to numeric value for trend line
     const dataPoints = logs.map(log => {
         let val = 0;
-        const l = log.label.toLowerCase();
-        if (l.includes('very positive')) val = 1;
-        else if (l.includes('positive')) val = 0.5;
-        else if (l.includes('neutral')) val = 0;
-        else if (l.includes('negative')) val = -0.5;
-        else if (l.includes('very negative')) val = -1;
+        if (log.label === 'Positive') val = 1;
+        else if (log.label === 'Negative') val = -1;
 
         return {
             x: new Date(log.timestamp),
@@ -109,11 +103,15 @@ function updateTrendChart(logs) {
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Sentiment Score',
+                    label: 'Sentiment Trend',
                     data: dataPoints,
-                    borderColor: '#8B5CF6',
+                    borderColor: '#8B5CF6', // Violet 500
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderWidth: 2,
                     tension: 0.4,
-                    fill: false
+                    fill: true,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
                 }]
             },
             options: {
@@ -121,75 +119,70 @@ function updateTrendChart(logs) {
                 scales: {
                     x: {
                         type: 'time',
-                        time: { unit: 'minute' },
-                        display: true
+                        time: { unit: 'minute', displayFormats: { minute: 'HH:mm' } },
+                        grid: { display: false }
                     },
                     y: {
-                        min: -1.2,
-                        max: 1.2,
+                        min: -1.5,
+                        max: 1.5,
                         ticks: {
                             callback: function (value) {
-                                if (value === 1) return 'Very Pos';
-                                if (value === 0.5) return 'Pos';
-                                if (value === 0) return 'Neu';
-                                if (value === -0.5) return 'Neg';
-                                if (value === -1) return 'Very Neg';
+                                if (value === 1) return 'Positive';
+                                if (value === 0) return 'Neutral';
+                                if (value === -1) return 'Negative';
                                 return '';
                             }
-                        }
+                        },
+                        grid: { borderDash: [5, 5] }
                     }
+                },
+                plugins: {
+                    legend: { display: false }
                 }
             }
         });
     }
 }
 
-function updateUserBotChart(logs) {
+function updateEngagementChart(logs) {
+    // Replaces User vs Bot chart with Engagement Level
     const ctx = document.getElementById('userBotSentimentChart').getContext('2d');
 
-    // Count sentiment types for User vs Bot
-    const userCounts = { pos: 0, neu: 0, neg: 0 };
-    const botCounts = { pos: 0, neu: 0, neg: 0 };
-
+    // Aggregate engagement levels
+    const engagementCounts = { high: 0, medium: 0, low: 0 };
     logs.forEach(log => {
-        const l = log.label.toLowerCase();
-        const isPos = l.includes('positive');
-        const isNeg = l.includes('negative');
-        const isNeu = !isPos && !isNeg;
-
-        const target = log.sender === 'user' ? userCounts : botCounts;
-
-        if (isPos) target.pos++;
-        else if (isNeg) target.neg++;
-        else target.neu++;
+        if (log.engagement_level) {
+            engagementCounts[log.engagement_level]++;
+        }
     });
 
-    if (charts.userBot) {
-        charts.userBot.data.datasets[0].data = [userCounts.pos, userCounts.neu, userCounts.neg];
-        charts.userBot.data.datasets[1].data = [botCounts.pos, botCounts.neu, botCounts.neg];
-        charts.userBot.update();
+    const data = [engagementCounts.high, engagementCounts.medium, engagementCounts.low];
+
+    if (charts.engagement) {
+        charts.engagement.data.datasets[0].data = data;
+        charts.engagement.update();
     } else {
-        charts.userBot = new Chart(ctx, {
+        charts.engagement = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Positive', 'Neutral', 'Negative'],
-                datasets: [
-                    {
-                        label: 'User',
-                        data: [userCounts.pos, userCounts.neu, userCounts.neg],
-                        backgroundColor: '#60A5FA'
-                    },
-                    {
-                        label: 'Bot',
-                        data: [botCounts.pos, botCounts.neu, botCounts.neg],
-                        backgroundColor: '#34D399'
-                    }
-                ]
+                labels: ['High Engagement', 'Medium', 'Low (Risk)'],
+                datasets: [{
+                    label: 'Messages',
+                    data: data,
+                    backgroundColor: ['#10B981', '#FBBF24', '#EF4444'],
+                    borderRadius: 6,
+                    barThickness: 40
+                }]
             },
             options: {
                 responsive: true,
                 scales: {
-                    y: { beginAtZero: true }
+                    y: { beginAtZero: true, grid: { display: false } },
+                    x: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Employee Engagement Levels' }
                 }
             }
         });
@@ -197,7 +190,6 @@ function updateUserBotChart(logs) {
 }
 
 function updateVolumeChart(logs) {
-    // Simple bar chart of message counts per sender
     const ctx = document.getElementById('volumeChart').getContext('2d');
 
     let userCount = 0;
@@ -215,17 +207,23 @@ function updateVolumeChart(logs) {
         charts.volume = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['User Messages', 'Bot Messages'],
+                labels: ['User', 'AI Agent'],
                 datasets: [{
-                    label: 'Message Count',
+                    label: 'Message Volume',
                     data: [userCount, botCount],
-                    backgroundColor: ['#60A5FA', '#34D399']
+                    backgroundColor: ['#3B82F6', '#8B5CF6'],
+                    borderRadius: 8,
+                    barThickness: 50
                 }]
             },
             options: {
+                indexAxis: 'y', // Horizontal bar
                 responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
+                scales: {
+                    x: { beginAtZero: true, grid: { display: false } },
+                    y: { grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
             }
         });
     }
@@ -235,32 +233,30 @@ function updateLogsTable(logs) {
     const tbody = document.querySelector('#logsTable tbody');
     tbody.innerHTML = '';
 
-    // Show newest first
     [...logs].reverse().forEach(log => {
         const tr = document.createElement('tr');
-
         const date = new Date(log.timestamp);
-        const timeStr = date.toLocaleTimeString();
+        const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         let sentimentClass = 'sentiment-neutral';
-        let label = 'N/A';
+        let label = 'Neutral';
         let score = '-';
+        let engagement = log.sentiment && log.sentiment.engagement_level ? log.sentiment.engagement_level : 'medium';
 
         if (log.sentiment) {
-            label = log.sentiment.label;
-            const l = label.toLowerCase();
-            if (l.includes('positive')) sentimentClass = 'sentiment-positive';
-            else if (l.includes('negative')) sentimentClass = 'sentiment-negative';
+            label = log.sentiment.sentiment || 'Neutral';
+            if (label === 'Positive') sentimentClass = 'sentiment-positive';
+            else if (label === 'Negative') sentimentClass = 'sentiment-negative';
 
-            score = (log.sentiment.score * 100).toFixed(1) + '%';
+            score = (log.sentiment.score * 100).toFixed(0) + '%';
         }
 
         tr.innerHTML = `
             <td>${timeStr}</td>
-            <td>${log.sender}</td>
-            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${log.message}">${log.message}</td>
+            <td>${log.sender === 'user' ? 'User' : 'AI'}</td>
+            <td class="message-cell" title="${log.message}">${log.message}</td>
             <td><span class="sentiment-badge ${sentimentClass}">${label}</span></td>
-            <td>${score}</td>
+            <td>${score} <span style="font-size:0.8em; color:#6B7280">(${engagement})</span></td>
         `;
         tbody.appendChild(tr);
     });
