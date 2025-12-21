@@ -22,16 +22,102 @@ let conversationIds = {
     jack: null
 };
 
-// Load conversation IDs from sessionStorage
+// Load conversation IDs from localStorage
 try {
-    if (typeof sessionStorage !== 'undefined') {
-        const savedIds = sessionStorage.getItem('conversationIds');
-        if (savedIds) {
-            conversationIds = JSON.parse(savedIds);
-        }
+    const savedIds = localStorage.getItem('conversationIds');
+    if (savedIds) {
+        conversationIds = JSON.parse(savedIds);
     }
 } catch (e) {
     console.log('Error loading conversation IDs', e);
+}
+
+// =======================
+// Chat Persistence Helpers
+// =======================
+
+function saveMessageHistory(chatType, messageObj) {
+    try {
+        let history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
+        if (!history[chatType]) {
+            history[chatType] = [];
+        }
+        history[chatType].push(messageObj);
+        localStorage.setItem('chatHistory', JSON.stringify(history));
+    } catch (e) {
+        console.error('Error saving chat history:', e);
+    }
+}
+
+function loadMessageHistory(chatType) {
+    try {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '{}');
+        return history[chatType] || [];
+    } catch (e) {
+        console.error('Error loading chat history:', e);
+        return [];
+    }
+}
+
+function renderMessageHistory(chatType) {
+    const messages = loadMessageHistory(chatType);
+    const container = document.getElementById(`${chatType}-messages`);
+    if (!container) return;
+
+    // Clear existing messages (except potentially welcome message if we wanted to keep it, but usually we replace)
+    // For now, let's just append or clear. Since we load on start, we should probably clear first or assume empty.
+    // But the HTML might have hardcoded welcome messages.
+    // Let's check if we have history. If we do, we might want to hide the default welcome message if it exists, or just append.
+    // The current HTML structure isn't fully visible, but usually it's empty or has a welcome.
+    // Let's just append for now, but to avoid duplicates if this is called multiple times, we should be careful.
+    // Actually, this should only be called on init.
+
+    if (messages.length > 0) {
+        container.innerHTML = ''; // Clear default welcome message if history exists
+        messages.forEach(msg => {
+            // Re-use addMessage but skip saving to avoid infinite loop/duplication in storage
+            addMessageToDOM(container, msg.text, msg.sender, chatType, msg.uploadData);
+        });
+        container.scrollTop = container.scrollHeight;
+    }
+}
+
+// Helper to add message to DOM without saving (for loading history)
+function addMessageToDOM(container, text, sender, chatType, uploadData = null) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender === 'user' ? 'user-message' : `${chatType}-message`}`;
+
+    let uploadHtml = '';
+    if (uploadData) {
+        if (uploadData.type === 'image') {
+            uploadHtml = `
+                <div class="message-upload">
+                    <img src="${uploadData.data}" alt="${uploadData.name}"
+                         style="max-width: 200px; max-height: 150px; border-radius: 8px; margin-bottom: 8px;">
+                </div>`;
+        } else if (uploadData.type === 'file') {
+            const fileIcon = getFileIcon(uploadData.mimeType);
+            uploadHtml = `
+                <div class="message-upload">
+                    <span style="margin-right: 8px;">${fileIcon}</span>
+                    <span>${uploadData.name}</span>
+                </div>`;
+        }
+    }
+
+    const avatarSvg = getAvatarSvg(sender);
+
+    messageDiv.innerHTML = `
+        <div class="avatar ${sender === 'user' ? 'user-avatar' : `${chatType}-avatar`}">
+            ${avatarSvg}
+        </div>
+        <div class="message-content">
+            ${uploadHtml}
+            ${text ? (sender === 'user' ? `<div class="message-text">${text}</div>` : parseMarkdown(text)) : ''}
+        </div>
+    `;
+
+    container.appendChild(messageDiv);
 }
 
 // =======================
@@ -43,6 +129,12 @@ function selectChat(chatType) {
     currentChat = chatType;
     document.getElementById('selection-screen').style.display = 'none';
     document.getElementById(`${chatType}-chat`).style.display = 'flex';
+
+    // Render history if empty (or just re-render to be safe, but we need to avoid dupes if we don't clear)
+    // The renderMessageHistory clears container, so it's safe to call.
+    // However, if we are already in the chat, we might not want to re-render.
+    // But selectChat is usually called from the selection screen.
+    renderMessageHistory(chatType);
 }
 
 // Go back to selection screen
@@ -64,6 +156,15 @@ function toggleNotification(chatType) {
 
 // Add message to chat
 function addMessage(container, text, sender, isTyping = false) {
+    // Save to history if not typing indicator and we have a current chat
+    if (!isTyping && currentChat) {
+        saveMessageHistory(currentChat, {
+            text: text,
+            sender: sender,
+            timestamp: new Date().toISOString()
+        });
+    }
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender === 'user' ? 'user-message' : `${currentChat}-message`}`;
 
@@ -140,13 +241,19 @@ function cleanResponse(text) {
     const patterns = [
         /^Hey there! I'm Jennie\. /i,
         /^Hi! I'm Jennie - nice to meet you \?\? /i, // The ?? might be emoji artifacts
-        /^Hi! I'm Jennie\. /i
+        /^Hi! I'm Jennie\. /i,
+        /^Hey there! How's your day going so far\? If you'd rather be anonymous, that's totally fine .? /i,
+        /^How's your day going so far\? It's totally fine if you'd rather be anonymous .? /i,
+        /^How's your day going so far\? It's totally fine if you'd rather be anonymous/i
     ];
 
     let cleaned = text;
     for (const pattern of patterns) {
         cleaned = cleaned.replace(pattern, '');
     }
+
+    // Additional cleanup for double newlines that might remain after removal
+    cleaned = cleaned.trim();
 
     return cleaned;
 }
@@ -206,11 +313,15 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
                 content_type: 'text'
             }
         ],
-        stream: false
+        stream: false,
+        auto_save_history: true
     };
 
     if (conversationIds[chatType]) {
         payload.conversation_id = conversationIds[chatType];
+        console.log(`[Coze] Using existing conversation_id for ${chatType}:`, payload.conversation_id);
+    } else {
+        console.log(`[Coze] No existing conversation_id for ${chatType}, starting new session.`);
     }
 
     // Step 1: Initiate Chat
@@ -239,11 +350,9 @@ async function callCozeAPI(message, chatType, userId = 'demo-user') {
     if (conversationId) {
         conversationIds[chatType] = conversationId;
         try {
-            if (typeof sessionStorage !== 'undefined') {
-                sessionStorage.setItem('conversationIds', JSON.stringify(conversationIds));
-            }
+            localStorage.setItem('conversationIds', JSON.stringify(conversationIds));
         } catch (e) {
-            console.warn('Failed to save conversation IDs to sessionStorage', e);
+            console.warn('Failed to save conversation IDs to localStorage', e);
         }
     }
 
@@ -361,6 +470,16 @@ function sendMessage(chatType) {
 }
 
 function addMessageWithUpload(container, text, sender, uploadData) {
+    // Save to history
+    if (currentChat) {
+        saveMessageHistory(currentChat, {
+            text: text,
+            sender: sender,
+            uploadData: uploadData,
+            timestamp: new Date().toISOString()
+        });
+    }
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
 
@@ -584,11 +703,9 @@ function clearChatHistory() {
             jack: null
         };
         try {
-            if (typeof sessionStorage !== 'undefined') {
-                sessionStorage.removeItem('conversationIds');
-            }
+            localStorage.removeItem('conversationIds');
         } catch (e) {
-            console.warn('Failed to clear sessionStorage', e);
+            console.warn('Failed to clear localStorage', e);
         }
 
         alert('Chat history has been cleared.');
