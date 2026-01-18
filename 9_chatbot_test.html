@@ -10,7 +10,7 @@
 
 <body>
     <div class="container">
-        <a href="/dashboard" class="dashboard-float-btn">📊 Dashboard</a>
+        <a href="dashboard.html" class="dashboard-float-btn">📊 Dashboard</a>
         <!-- Chat Selection Screen -->
         <div id="selection-screen" class="selection-screen">
             <h1>OmPathy: Your AI Teammates</h1>
@@ -80,7 +80,7 @@
                             </svg>
                         </button>
                     </div>
-                    <input type="text" placeholder="Type a message..." id="jennie-input">
+                    <textarea placeholder="Type a message..." id="jennie-input" rows="1"></textarea>
                     <button class="send-btn" onclick="sendMessage('jennie')">→</button>
                 </div>
                 <input type="file" id="jennie-image-upload" accept="image/*" style="display: none;"
